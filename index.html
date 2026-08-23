@@ -8188,7 +8188,7 @@
                 return `<div class="usuario-item" style="${desabilitado ? 'opacity:0.6;' : ''}">
                     <div class="usuario-info"><div class="usuario-avatar">${escapeHtml((u.nome||'?').charAt(0).toUpperCase())}</div>
                         <div class="usuario-dados"><div class="nome">${escapeHtml(u.nome||'Sem nome')} ${admin?'👑':''}</div>
-                        <div class="email">${escapeHtml(u.email||'')} • ${escapeHtml(u.usuario||u.email||'')}</div>
+                        <div class="email">${escapeHtml(u.email||'')}${(u.usuario && u.usuario.toLowerCase() !== (u.email||'').toLowerCase()) ? ' • ' + escapeHtml(u.usuario) : ''}</div>
                         ${u.perfil==='Pai'?`<div style="font-size:12px;color:var(--secondary);">👨‍👦 Alunos vinculados: ${alunoVinculado}</div>`:''}</div>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span class="usuario-perfil">${escapeHtml(formatarPerfil(u.perfil))}</span><span class="usuario-status ${admin||(u.status!=='rejeitado'&&!desabilitado)?'ativo':'pendente'}">${status}</span></div>
