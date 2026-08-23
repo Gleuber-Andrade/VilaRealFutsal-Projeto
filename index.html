@@ -4827,12 +4827,15 @@
                 loginPage.style.background = 'linear-gradient(135deg, #0f1b2d, #1a2d4a)';
             }
 
-            const logoBig = document.getElementById('loginLogoBig');
-            if (config.loginLogo) {
-                logoBig.innerHTML = `<img src="${config.loginLogo}" alt="Logo">`;
-            } else {
-                logoBig.innerHTML = '⚽';
-            }
+            // Bug real corrigido: só a tela de login (#loginLogoBig) recebia a
+            // logo personalizada — as telas de cadastro, recuperar senha e
+            // redefinir senha tinham cada uma seu próprio ícone fixo, nunca
+            // atualizado, então sempre mostravam a bolinha padrão do sistema
+            // mesmo depois de trocar a logo em Personalizar. Agora todas as
+            // telas de login (.logo-big dentro de .login-page) são atualizadas juntas.
+            document.querySelectorAll('.login-page .logo-big').forEach(logoBig => {
+                logoBig.innerHTML = config.loginLogo ? `<img src="${config.loginLogo}" alt="Logo">` : '⚽';
+            });
 
             const root = document.documentElement;
             root.style.setProperty('--login-accent-color', config.loginPrimaryColor || '#d4a020');
