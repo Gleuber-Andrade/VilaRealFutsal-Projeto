@@ -3979,12 +3979,19 @@
         }
 
         async function salvarDadosServidor() {
-            if (!apiToken) return;
+            // Bug real corrigido: esta função nunca informava quem a chamou se o
+            // salvamento realmente deu certo — só mostrava um aviso genérico e
+            // seguia em frente. Quem editava um usuário via salvarUsuario() via
+            // um "✅ atualizado" mesmo quando o servidor tinha recusado a
+            // alteração (ex: e-mail duplicado), e só descobria ao atualizar a
+            // página e ver o dado antigo de volta. Agora a função devolve
+            // true/false para quem chamou poder reagir de verdade.
+            if (!apiToken) return false;
             if (apiSyncInProgress) {
                 // Já existe um salvamento em andamento — em vez de descartar esta
                 // mudança em silêncio, agenda uma nova tentativa assim que o atual terminar.
                 apiSyncPendenteRetentativa = true;
-                return;
+                return false;
             }
             apiSyncInProgress = true;
             try {
@@ -4000,9 +4007,11 @@
                         if (senhaLocais.has(u.id)) u.senha = senhaLocais.get(u.id);
                     });
                 }
+                return true;
             } catch (e) {
                 console.error('Falha ao salvar no servidor:', e);
-                showToast('⚠️ Não foi possível salvar no servidor. Verifique sua conexão e tente novamente.', 'error');
+                showToast('⚠️ ' + (e.message || 'Não foi possível salvar no servidor. Verifique sua conexão e tente novamente.'), 'error');
+                return false;
             } finally {
                 apiSyncInProgress = false;
                 if (apiSyncPendenteRetentativa) {
@@ -8356,6 +8365,13 @@
                 // ---- Edição de usuário existente ----
                 const user = data.usuarios.find(u => u.id === editId);
                 if (!user) { showToast('Usuário não encontrado', 'error'); return false; }
+
+                // Guarda os valores originais para desfazer a alteração na tela
+                // se o servidor recusar (ex: e-mail já usado por outra conta) —
+                // antes disso, a tela dava "sucesso" e trocava de volta sozinha
+                // só quando a página era atualizada, sem avisar o motivo.
+                const original = { nome: user.nome, email: user.email, telefone: user.telefone, perfil: user.perfil, permissoes: user.permissoes };
+
                 user.nome = nome;
                 user.email = email;
                 user.telefone = telefone;
@@ -8375,7 +8391,14 @@
                     currentUser.telefone = telefone;
                 }
 
-                saveData();
+                const salvouComSucesso = await saveData();
+                if (!salvouComSucesso) {
+                    Object.assign(user, original);
+                    if (currentUser && currentUser.id === editId) Object.assign(currentUser, original);
+                    renderUsuarios();
+                    return false;
+                }
+
                 closeModal('modalUsuario');
                 renderUsuarios();
                 renderizarMenu();
