@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         /* ===== TODOS OS ESTILOS (mantidos) ===== */
         * {
@@ -3093,37 +3092,6 @@
                             </label>
                         </div>
 
-                        <div style="margin-top:16px;border-top:1px solid #e5e7eb;padding-top:16px;">
-                            <h4 style="font-size:15px;color:var(--primary);margin-bottom:12px;">
-                                <i class="fas fa-envelope"></i> E-mail para Recuperação
-                            </h4>
-                            <p style="font-size:12px;color:var(--gray-dark);margin-bottom:8px;">
-                                Configure o serviço de e-mail para enviar senhas automaticamente.
-                                <br>Cadastre-se gratuitamente em <a href="https://www.emailjs.com" target="_blank" style="color:var(--secondary);">EmailJS</a>
-                            </p>
-                            <div class="config-item">
-                                <span class="config-label">Service ID</span>
-                                <input type="text" id="emailjsServiceId" placeholder="service_xxxx" style="padding:6px 12px;border:2px solid #e5e7eb;border-radius:6px;flex:1;">
-                            </div>
-                            <div class="config-item">
-                                <span class="config-label">Template ID</span>
-                                <input type="text" id="emailjsTemplateId" placeholder="template_xxxx" style="padding:6px 12px;border:2px solid #e5e7eb;border-radius:6px;flex:1;">
-                            </div>
-                            <div class="config-item">
-                                <span class="config-label">Public Key</span>
-                                <input type="text" id="emailjsPublicKey" placeholder="public_xxxx" style="padding:6px 12px;border:2px solid #e5e7eb;border-radius:6px;flex:1;">
-                            </div>
-                            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
-                                <button class="btn btn-secondary btn-sm" onclick="salvarConfigEmailJS()">
-                                    <i class="fas fa-save"></i> Salvar Configurações
-                                </button>
-                                <button class="btn btn-email-test btn-sm" onclick="testarEmailJS()">
-                                    <i class="fas fa-paper-plane"></i> Testar Envio de E-mail
-                                </button>
-                            </div>
-                            <div style="margin-top:16px;border-top:1px solid #e5e7eb;padding-top:16px;"><h4 style="font-size:15px;color:var(--primary);margin-bottom:12px;"><i class="fas fa-reply"></i> Responder por E-mail</h4><input id="emailRespostaDestino" type="email" placeholder="destinatario@email.com" style="width:100%;padding:8px;margin-bottom:8px;border:2px solid #e5e7eb;border-radius:6px;"><input id="emailRespostaAssunto" type="text" placeholder="Assunto" style="width:100%;padding:8px;margin-bottom:8px;border:2px solid #e5e7eb;border-radius:6px;"><textarea id="emailRespostaMensagem" placeholder="Mensagem" rows="5" style="width:100%;padding:8px;margin-bottom:8px;border:2px solid #e5e7eb;border-radius:6px;"></textarea><button class="btn btn-secondary btn-sm" onclick="enviarRespostaEmail()"><i class="fas fa-paper-plane"></i> Enviar Resposta</button><div id="emailRespostaStatus" style="display:none;margin-top:8px;padding:8px;border-radius:8px;"></div></div><div id="emailTestResult" style="margin-top:8px;padding:8px 12px;border-radius:8px;display:none;font-size:13px;"></div>
-                        </div>
-
                         <button class="btn btn-primary btn-sm" onclick="salvarConfiguracoes()" style="margin-top:12px;width:100%;">
                             <i class="fas fa-save"></i> Salvar Configurações Gerais
                         </button>
@@ -3449,18 +3417,6 @@
                     <span id="solicitacoesBadge" style="display:none;background:#ef4444;color:white;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;"></span>
                 </div>
                 <div id="listaUsuarios"></div>
-            </div>
-
-            <div class="card" id="cardSenhaMaster" style="display:none;">
-                <div class="card-header">
-                    <h3><i class="fas fa-shield-alt"></i> Senha Master</h3>
-                </div>
-                <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:var(--radius);padding:16px 20px;">
-                    <code id="senhaMasterDisplay" style="background:var(--primary);color:var(--secondary);padding:6px 16px;border-radius:8px;font-size:18px;font-weight:700;letter-spacing:2px;">••••••••</code>
-                    <button class="btn btn-secondary btn-sm" onclick="mostrarSenhaMaster()" style="margin-left:8px;">
-                        <i class="fas fa-eye"></i> Mostrar
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -3869,7 +3825,6 @@
                     treinosCancelados: [],
                     notifAutomatica: true,
                     mensagemPadrao: 'Prezado(a) responsável, seu filho(a) esteve presente no treino do Vila Real Futsal hoje!',
-                    senhaMaster: '',
                     whatsappNumero: '111946359524',
                     loginLogo: '',
                     loginBg: '',
@@ -3879,7 +3834,6 @@
                     loginLogoSize: 160,
                     loginTitle: 'VILA REAL',
                     loginSubtitle: 'Futsal · Gestão de Presenças',
-                    emailjs: { serviceId: '', templateId: '', publicKey: '' },
                     botoes: {
                         primaryBg: '#0f1b2d',
                         primaryColor: '#ffffff',
@@ -3925,7 +3879,6 @@
         let currentUser = null;
         let html5QrCode = null;
         let scannerAtivo = false;
-        let mostrarSenhaFlag = false;
         let categoriaSelecionadaCarteirinha = localStorage.getItem('VRF_ULTIMA_CATEGORIA_CARTEIRINHA') || '';
         let abaAtualPersonalizacao = 'login';
         let scannerFechadoAutomaticamente = false;
@@ -4090,7 +4043,6 @@
                     }
                     if (!parsed.config.botoes) parsed.config.botoes = defaults.config.botoes;
                     if (!parsed.config.cores) parsed.config.cores = defaults.config.cores;
-                    if (!parsed.config.emailjs) parsed.config.emailjs = { serviceId: '', templateId: '', publicKey: '' };
                     const adminExists = parsed.usuarios.some(u => u.id === 'admin');
                     if (!adminExists) parsed.usuarios.unshift(ADMIN_DATA);
                     if (!parsed.config.horariosCategoria) parsed.config.horariosCategoria = {};
@@ -4711,7 +4663,7 @@
                 document.getElementById('userAvatar').textContent=currentUser.nome.charAt(0).toUpperCase();
                 document.getElementById('whatsappFloat').style.display='flex';
                 document.getElementById('securityBadge').style.display=isAdmin()?'inline-flex':'none';
-                atualizarWhatsAppBadge(); initEmailJS(); renderizarMenu(); initSystem(); aplicarPersonalizacaoCompleta(); atualizarBotoesPorPerfil();
+                atualizarWhatsAppBadge(); renderizarMenu(); initSystem(); aplicarPersonalizacaoCompleta(); atualizarBotoesPorPerfil();
                 iniciarSincronizacaoOnline();
                 verificarPrimeiroAcessoPai();
                 verificarNovasMensagensNoLogin();
@@ -4773,21 +4725,6 @@
             if (cardCategoria) cardCategoria.style.display = pai ? 'none' : '';
             const cardAcessos = document.getElementById('cardAcessosRapidos');
             if (cardAcessos) cardAcessos.style.display = pai ? 'none' : '';
-        }
-
-        // ============================================================
-        //  INICIALIZAR EMAILJS
-        // ============================================================
-        function initEmailJS() {
-            const config = data.config.emailjs || {};
-            if (config.publicKey && config.publicKey !== '') {
-                try {
-                    emailjs.init(config.publicKey);
-                    console.log('✅ EmailJS inicializado com sucesso!');
-                } catch (e) {
-                    console.warn('⚠️ EmailJS não inicializado:', e);
-                }
-            }
         }
 
         function logout() {
@@ -6242,7 +6179,6 @@
                 year: 'numeric'
             });
 
-            document.getElementById('senhaMasterDisplay').textContent = '••••••••';
 
             if (data.config.whatsappNumero) {
                 document.getElementById('whatsappNumero').value = data.config.whatsappNumero;
@@ -6254,11 +6190,6 @@
             document.getElementById('diasTreino').value = data.config.diasTreino || 'Segunda, Terça, Quarta, Quinta, Sexta';
             carregarCheckboxesDiasTreino();
             renderTreinosCancelados();
-
-            const emailjsConfig = data.config.emailjs || {};
-            document.getElementById('emailjsServiceId').value = emailjsConfig.serviceId || '';
-            document.getElementById('emailjsTemplateId').value = emailjsConfig.templateId || '';
-            document.getElementById('emailjsPublicKey').value = emailjsConfig.publicKey || '';
 
             carregarPersonalizacaoBotoes();
             carregarCoresSistema();
@@ -7906,9 +7837,6 @@
                 document.getElementById('whatsappNumero').disabled = true;
                 document.getElementById('mensagemPadrao').disabled = true;
                 document.getElementById('notifAutomatica').disabled = true;
-                document.getElementById('emailjsServiceId').disabled = true;
-                document.getElementById('emailjsTemplateId').disabled = true;
-                document.getElementById('emailjsPublicKey').disabled = true;
                 return;
             }
 
@@ -7964,19 +7892,11 @@
             carregarCheckboxesDiasTreino();
             renderTreinosCancelados();
 
-            const emailjsConfig = data.config.emailjs || {};
-            document.getElementById('emailjsServiceId').value = emailjsConfig.serviceId || '';
-            document.getElementById('emailjsTemplateId').value = emailjsConfig.templateId || '';
-            document.getElementById('emailjsPublicKey').value = emailjsConfig.publicKey || '';
-
             document.getElementById('diasTreino').disabled = false;
             document.querySelectorAll('#gridDiasTreino input[type="checkbox"]').forEach(cb => cb.disabled = false);
             document.getElementById('whatsappNumero').disabled = false;
             document.getElementById('mensagemPadrao').disabled = false;
             document.getElementById('notifAutomatica').disabled = false;
-            document.getElementById('emailjsServiceId').disabled = false;
-            document.getElementById('emailjsTemplateId').disabled = false;
-            document.getElementById('emailjsPublicKey').disabled = false;
         }
 
         function adicionarCategoria() {
@@ -8086,81 +8006,8 @@
                 }
             });
 
-            const serviceId = document.getElementById('emailjsServiceId').value.trim();
-            const templateId = document.getElementById('emailjsTemplateId').value.trim();
-            const publicKey = document.getElementById('emailjsPublicKey').value.trim();
-
-            if (serviceId && templateId && publicKey) {
-                data.config.emailjs = { serviceId, templateId, publicKey };
-                try {
-                    if (typeof emailjs !== 'undefined' && emailjs.init) {
-                        emailjs.init(publicKey);
-                    }
-                } catch (e) {
-                    console.warn('Erro ao inicializar EmailJS:', e);
-                }
-            }
-
             saveData();
             showToast('Configurações salvas!');
-        }
-
-        // ============================================================
-        //  TESTAR ENVIO DE E-MAIL
-        // ============================================================
-        async function testarEmailJS() {
-            const config = data.config.emailjs || {};
-            const resultDiv = document.getElementById('emailTestResult');
-
-            if (!config.serviceId || !config.templateId || !config.publicKey) {
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = `
-                    <span style="color:#ef4444;">❌ Configure o EmailJS primeiro! Preencha Service ID, Template ID e Public Key.</span>
-                `;
-                resultDiv.style.background = '#fee2e2';
-                showToast('Configure o EmailJS primeiro!', 'error');
-                return;
-            }
-
-            const emailTeste = currentUser ? currentUser.email : 'teste@email.com';
-            const nomeTeste = currentUser ? currentUser.nome : 'Usuário Teste';
-
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `
-                <i class="fas fa-spinner fa-spin"></i> Enviando e-mail de teste para ${emailTeste}...
-            `;
-            resultDiv.style.background = '#fef3c7';
-
-            try {
-                if (typeof emailjs !== 'undefined' && emailjs.init) {
-                    emailjs.init(config.publicKey);
-                }
-
-                const templateParams = {
-                    to_email: emailTeste,
-                    to_name: nomeTeste,
-                    nova_senha: 'SenhaTeste@123',
-                    sistema: 'Vila Real Futsal - Teste',
-                    mensagem: 'Este é um e-mail de teste para verificar a configuração do EmailJS.'
-                };
-
-                const response = await emailjs.send(config.serviceId, config.templateId, templateParams, config.publicKey);
-
-                resultDiv.innerHTML = `
-                    <span style="color:#22c55e;">✅ E-mail de teste enviado com sucesso para <strong>${emailTeste}</strong>!</span>
-                    <br><small style="color:var(--gray-dark);">Verifique sua caixa de entrada (ou spam).</small>
-                `;
-                resultDiv.style.background = '#dcfce7';
-                showToast(`✅ E-mail de teste enviado para ${emailTeste}!`);
-            } catch (error) {
-                console.error('Erro no teste:', error);
-                resultDiv.innerHTML = `
-                    <span style="color:#ef4444;">❌ Erro ao enviar e-mail de teste: ${error?.message || 'Erro desconhecido'}</span>
-                    <br><small style="color:var(--gray-dark);">Verifique suas configurações do EmailJS.</small>
-                `;
-                resultDiv.style.background = '#fee2e2';
-                showToast('❌ Erro ao enviar e-mail de teste', 'error');
-            }
         }
 
         // ============================================================
@@ -8169,9 +8016,6 @@
         function renderUsuarios() {
             const container = document.getElementById('listaUsuarios');
             if (!container) return;
-
-            const cardSenhaMaster = document.getElementById('cardSenhaMaster');
-            if (cardSenhaMaster) cardSenhaMaster.style.display = isAdmin() ? 'block' : 'none';
 
             if (!isAdmin()) {
                 container.innerHTML='<div class="empty-state"><i class="fas fa-lock"></i><h3>Acesso restrito a administradores</h3></div>';
@@ -8715,40 +8559,6 @@
             return false;
         }
 
-        async function enviarRespostaEmail(){
-            if(!isAdmin()){showToast('❌ Apenas administradores.','error');return;}
-            const to=document.getElementById('emailRespostaDestino')?.value.trim();
-            const subject=document.getElementById('emailRespostaAssunto')?.value.trim();
-            const message=document.getElementById('emailRespostaMensagem')?.value.trim();
-            const status=document.getElementById('emailRespostaStatus');
-            const config=data.config.emailjs||{};
-            if(!to||!subject||!message){if(status){status.textContent='❌ Preencha destinatário, assunto e mensagem.';status.style.display='block';}return;}
-            if(!config.serviceId||!config.templateId||!config.publicKey){showToast('❌ Configure o EmailJS primeiro.','error');return;}
-            try{
-                if(typeof emailjs!=='undefined'&&emailjs.init)emailjs.init(config.publicKey);
-                await emailjs.send(config.serviceId,config.templateId,{to_email:to,to_name:'',from_name:data.config.emailRemetenteNome||'Vila Real Futsal',subject,assunto:subject,mensagem:message,sistema:'Vila Real Futsal',tipo_email:'Resposta manual',usuario:'',senha:'',nova_senha:'',codigo_recuperacao:''},config.publicKey);
-                if(status){status.textContent='✅ Resposta enviada com sucesso.';status.style.display='block';}
-                showToast('✅ E-mail enviado!');
-            }catch(e){if(status){status.textContent='❌ '+(e?.text||e?.message||'Falha no envio.');status.style.display='block';}showToast('❌ Falha ao enviar e-mail.','error');}
-        }
-
-        // ============================================================
-        //  SENHA MASTER
-        // ============================================================
-        function mostrarSenhaMaster() {
-            if (!isAdmin()) {
-                showToast('❌ Apenas o administrador pode ver a senha master', 'error');
-                return;
-            }
-            const display = document.getElementById('senhaMasterDisplay');
-            if (mostrarSenhaFlag) {
-                display.textContent = '••••••••';
-                mostrarSenhaFlag = false;
-            } else {
-                display.textContent = data.config.senhaMaster || 'Nenhuma';
-                mostrarSenhaFlag = true;
-            }
-        }
 
         // ============================================================
         //  RECUPERAR SENHA (fluxo real via servidor + e-mail com link)
@@ -8999,7 +8809,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     document.getElementById('securityBadge').style.display = isAdmin() ? 'inline-flex' : 'none';
 
                     atualizarWhatsAppBadge();
-                    initEmailJS();
                     renderizarMenu();
                     initSystem();
                     aplicarPersonalizacaoCompleta();
