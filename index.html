@@ -8944,6 +8944,20 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
             if (!usuarioSessao) usuarioSessao = carregarSessao();
 
+            // Bug real corrigido: todo esse processo de verificação (aparência,
+            // dados do servidor, sessão via /me) é assíncrono e pode levar
+            // alguns segundos. Se nesse meio-tempo o usuário clicou em
+            // "Esqueceu a senha?", "Cadastre-se" ou abriu um link de
+            // redefinição, essas telas ficam visíveis — mas o código abaixo
+            // trocava de tela de qualquer jeito assim que a verificação
+            // terminava, fazendo o painel principal aparecer "por baixo"
+            // dessas telas sem nenhum login ter acontecido de verdade. Agora,
+            // se o usuário já saiu da tela de login para uma dessas telas
+            // enquanto isso rodava, não mexemos mais na tela.
+            const telaSecundariaAberta = ['recuperarSenhaContainer', 'registroUsuarioContainer', 'redefinirSenhaContainer']
+                .some(id => document.getElementById(id)?.style.display !== 'none');
+            if (telaSecundariaAberta) return;
+
             if (usuarioSessao) {
                 if (usuarioSessao.status === 'aprovado') {
                     currentUser = usuarioSessao;
