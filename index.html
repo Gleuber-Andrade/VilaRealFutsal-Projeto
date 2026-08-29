@@ -4026,10 +4026,27 @@
         }
 
         function iniciarSincronizacaoOnline() {
+            // Intervalo aumentado de 10s para 60s, e a sincronização pausa
+            // completamente quando a aba não está em uso (segundo plano/tela
+            // bloqueada). Cada sincronização busca o estado inteiro do sistema
+            // (todos os alunos, fotos incluídas) — a cada 10s, isso consumia o
+            // limite de saída (egress) do Supabase muito rápido. Reduzir a
+            // frequência e não sincronizar com a aba escondida corta o consumo
+            // em pelo menos 6x, sem perder a atualização em tempo quase real.
             setInterval(async () => {
                 if (!apiToken || !currentUser) return;
+                if (document.hidden) return;
                 await sincronizarComServidor();
-            }, 10000);
+            }, 60000);
+
+            // Ao voltar para a aba depois de um tempo fora, sincroniza na hora
+            // uma vez — assim a espera de até 60s só se aplica a quem já está
+            // olhando a tela, não a quem acabou de voltar.
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && apiToken && currentUser) {
+                    sincronizarComServidor();
+                }
+            });
         }
 
         function loadData() {
@@ -4146,6 +4163,31 @@
             });
         }
 
+        // Redimensiona a imagem e já sobe para o Storage do Supabase, devolvendo
+        // uma URL curta em vez do arquivo inteiro em base64. Isso é o que resolve
+        // o consumo alto de "saída" (egress) do Supabase: antes, cada foto viajava
+        // dentro do JSON do estado a cada sincronização automática (a cada 10-60s,
+        // por usuário conectado); agora ela é enviada uma única vez, e o navegador
+        // guarda a imagem em cache pelo link, em vez de baixar tudo de novo.
+        // "tipo" define a pasta no Storage (ex: 'aluno', 'logo', 'fundo-carteirinha').
+        async function redimensionarEUpload(file, maxLado, qualidade, formato, tipo) {
+            const dataUrl = await redimensionarImagem(file, maxLado, qualidade, formato);
+            try {
+                const resultado = await apiFetch('/upload-imagem', {
+                    method: 'POST',
+                    body: JSON.stringify({ imagemBase64: dataUrl, tipo }),
+                });
+                return resultado.url;
+            } catch (erro) {
+                console.error('Falha ao subir imagem para o Storage, usando localmente por enquanto:', erro);
+                showToast('⚠️ Não foi possível enviar a imagem ao servidor agora. Ela será salva localmente e reenviada mais tarde.', 'error');
+                // Fallback: se o upload falhar (ex: sem internet no momento), ainda
+                // devolve o base64 — o PUT /api/state faz o upload automaticamente
+                // depois, então a imagem não se perde, só demora um pouco mais.
+                return dataUrl;
+            }
+        }
+
         // Menu com 3 opções para anexar uma foto: tirar na hora (câmera ao vivo,
         // via getUserMedia — funciona em celular e computador), escolher da
         // galeria de fotos, ou escolher um arquivo do dispositivo.
@@ -4174,9 +4216,9 @@
 
             const processar = (file) => {
                 if (!file) return;
-                redimensionarImagem(file, 1400, 0.94).then((dataUrl) => {
+                redimensionarEUpload(file, 1400, 0.94, undefined, 'aluno').then((url) => {
                     document.getElementById('menuSeletorFoto')?.remove();
-                    callback(dataUrl);
+                    callback(url);
                 }).catch(() => showToast('❌ Não foi possível processar a imagem', 'error'));
             };
 
@@ -4297,8 +4339,8 @@
 
             canvas.toBlob((blob) => {
                 if (!blob) { showToast('❌ Não foi possível capturar a foto', 'error'); return; }
-                redimensionarImagem(blob, 1400, 0.94).then((dataUrl) => {
-                    callback && callback(dataUrl);
+                redimensionarEUpload(blob, 1400, 0.94, undefined, 'aluno').then((url) => {
+                    callback && callback(url);
                 }).catch(() => showToast('❌ Não foi possível processar a foto', 'error'));
             }, 'image/jpeg', 0.95);
         }
@@ -4835,8 +4877,8 @@
         function alterarLoginLogo(event) {
             const file = event.target.files[0];
             if (!file) return;
-            redimensionarImagem(file, 800, 0.95, 'image/png').then((dataUrl) => {
-                data.config.loginLogo = dataUrl;
+            redimensionarEUpload(file, 800, 0.95, 'image/png', 'config').then((url) => {
+                data.config.loginLogo = url;
                 saveData();
                 aplicarPersonalizacaoCompleta();
                 showToast('Logo atualizado!');
@@ -5144,8 +5186,8 @@
             if (!isAdmin()) { showToast('❌ Apenas o administrador pode alterar a imagem de fundo', 'error'); return; }
             const file = event.target.files[0];
             if (!file) return;
-            redimensionarImagem(file, 2000, 0.94).then((dataUrl) => {
-                data.config.carteirinhaFundo = dataUrl;
+            redimensionarEUpload(file, 2000, 0.94, undefined, 'config').then((url) => {
+                data.config.carteirinhaFundo = url;
                 saveData();
                 renderConfigImagemCarteirinha();
                 showToast('✅ Imagem de fundo atualizada para todos os alunos!');
@@ -5167,8 +5209,8 @@
             if (!isAdmin()) { showToast('❌ Apenas o administrador pode alterar a logo da carteirinha', 'error'); return; }
             const file = event.target.files[0];
             if (!file) return;
-            redimensionarImagem(file, 1000, 0.95, 'image/png').then((dataUrl) => {
-                data.config.carteirinhaLogo = dataUrl;
+            redimensionarEUpload(file, 1000, 0.95, 'image/png', 'config').then((url) => {
+                data.config.carteirinhaLogo = url;
                 saveData();
                 renderConfigImagemCarteirinha();
                 showToast('✅ Logo da carteirinha atualizada para todos os alunos!');
