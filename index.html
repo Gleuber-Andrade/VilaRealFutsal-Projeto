@@ -8633,14 +8633,14 @@
 
         async function handleRedefinirSenhaComToken(e){
             e.preventDefault();
-            const token=new URLSearchParams(window.location.search).get('resetToken');
+            const token=new URLSearchParams(window.location.search).get('resetToken');const uid=new URLSearchParams(window.location.search).get('uid');
             const novaSenha=document.getElementById('redefinirNovaSenha').value;
             const conf=document.getElementById('redefinirConfirmarSenha').value;
             const err=document.getElementById('redefinirError');
             const ok=document.getElementById('redefinirSuccess');
             const btn=document.getElementById('btnRedefinirSenha');
             err.style.display='none'; ok.style.display='none';
-            if(!token){err.textContent='Link inválido. Solicite uma nova redefinição de senha.';err.style.display='block';return false;}
+            if(!token||!uid){err.textContent='Link inválido. Solicite uma nova redefinição de senha.';err.style.display='block';return false;}
             if(!validarSenha(novaSenha)){err.textContent='A nova senha deve ter mínimo 6 caracteres, letra, número e caractere especial.';err.style.display='block';return false;}
             if(novaSenha!==conf){err.textContent='As senhas não coincidem.';err.style.display='block';return false;}
             btn.disabled=true;
@@ -8648,7 +8648,7 @@
                 const resp=await fetch(API_BASE+'/auth/reset-password',{
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({token,novaSenha})
+                    body:JSON.stringify({uid,token,novaSenha})
                 });
                 const result=await resp.json();
                 if(!resp.ok) throw new Error(result.error||'Não foi possível redefinir a senha.');
