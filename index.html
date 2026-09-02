@@ -6132,6 +6132,7 @@
                 }
                 sincronizarUsuarioAtual();
                 salvarSessao();
+                document.getElementById('landingPageContainer').style.display='none';
                 document.getElementById('loginContainer').style.display='none';
                 document.getElementById('sidebar').style.display='flex';
                 document.getElementById('mainContent').style.display='block';
@@ -10824,6 +10825,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (usuarioSessao.status === 'aprovado') {
                     currentUser = usuarioSessao;
                     sincronizarUsuarioAtual();
+                    document.getElementById('landingPageContainer').style.display = 'none';
                     document.getElementById('loginContainer').style.display = 'none';
                     document.getElementById('sidebar').style.display = 'flex';
                     document.getElementById('mainContent').style.display = 'block';
