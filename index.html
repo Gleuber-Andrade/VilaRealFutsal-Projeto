@@ -2964,7 +2964,13 @@
         .patrocinio-slide video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            /* "contain" (não "cover") — mostra a imagem/vídeo inteiro, do
+               jeito que foi carregado, sem cortar nem esticar/distorcer pra
+               preencher o quadro. Pode sobrar um respiro nas laterais/topo
+               se a proporção do arquivo for diferente do painel — é
+               esperado, e melhor do que deformar a imagem do patrocinador. */
+            object-fit: contain;
+            background: #000;
             display: block;
         }
 
@@ -3200,8 +3206,9 @@
         <span class="tooltip">Enviar WhatsApp</span>
     </button>
 
-    <!-- ===== MENU MOBILE TOGGLE ===== -->
-    <button class="sidebar-mobile-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+    <!-- ===== MENU MOBILE TOGGLE (só aparece dentro do sistema, depois do login —
+         nunca na página pública, por isso começa escondido aqui) ===== -->
+    <button class="sidebar-mobile-toggle" id="sidebarToggle" onclick="toggleSidebar()" style="display:none;">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -3235,10 +3242,6 @@
                 <a onclick="fecharMenuLandingEIrPara('landingConquistasSection')">Conquistas</a>
                 <a onclick="fecharMenuLandingEIrPara('landingPatrocinioSection')">Patrocinadores</a>
             </div>
-            <div class="nav-cta">
-                <button class="btn btn-secondary" onclick="mostrarLoginDaLanding()">Já sou Aluno</button>
-                <button class="btn btn-primary" style="background:var(--landing-accent, #16a34a);" onclick="mostrarCadastroDaLanding()">Cadastre-se</button>
-            </div>
         </nav>
 
         <div class="landing-hero" id="landingHeroAncora">
@@ -3257,7 +3260,6 @@
                     </div>
                 </div>
                 <div class="hero-ad-panel" id="landingPropagandaSection">
-                    <div class="ad-panel-label"><i class="fas fa-bullhorn"></i> Propaganda</div>
                     <div class="patrocinio-carrossel" id="propagandaCarrossel" onclick="clicarPropagandaAtiva()">
                         <div class="patrocinio-vazio" id="propagandaVazio">Nenhuma propaganda cadastrada no momento.</div>
                     </div>
@@ -4491,6 +4493,19 @@
                         <button class="btn btn-success btn-sm" style="margin-top:12px;" onclick="adicionarConquista()">
                             <i class="fas fa-plus"></i> Adicionar à Galeria
                         </button>
+                    </div>
+
+                    <h4 style="margin:28px 0 8px;color:var(--primary);">
+                        <i class="fas fa-chart-bar"></i> Relatório de Cliques
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Quantas vezes cada propaganda/patrocinador foi clicado (e levou o visitante pro WhatsApp).
+                    </p>
+                    <button class="btn btn-secondary btn-sm" onclick="carregarRelatorioCliques()" style="margin-bottom:12px;">
+                        <i class="fas fa-sync"></i> Atualizar Relatório
+                    </button>
+                    <div id="relatorioCliquesContainer">
+                        <p style="font-size:12px;color:var(--gray-dark);">Clique em "Atualizar Relatório" para carregar.</p>
                     </div>
                 </div>
 
@@ -5891,12 +5906,28 @@
             patrocinioIndiceAtual = indice;
         }
 
+        // Registra o clique no servidor (função isolada, própria do site
+        // público — não interfere em nada do resto do sistema). Não bloqueia
+        // nem atrasa a abertura do WhatsApp: dispara e segue em frente, e se
+        // falhar por qualquer motivo (sem internet num instante, etc.),
+        // simplesmente não conta essa vez, sem mostrar erro pra quem clicou.
+        function registrarCliqueAnuncio(tipo, anuncioId) {
+            try {
+                fetch(API_BASE + '/public/registrar-clique', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tipo, anuncioId }),
+                }).catch(() => {});
+            } catch (e) { /* nunca deixa isso quebrar o clique do visitante */ }
+        }
+
         // Clicar em qualquer parte do carrossel abre o WhatsApp do patrocinador
         // exibido no momento — não precisa acertar num botão específico.
         function clicarPatrocinioAtivo() {
             const patrocinadores = Array.isArray(data.config?.patrocinadores) ? data.config.patrocinadores : [];
             const patrocinador = patrocinadores[patrocinioIndiceAtual];
             if (!patrocinador || !patrocinador.whatsapp) return;
+            registrarCliqueAnuncio('patrocinador', patrocinador.id);
             const numero = String(patrocinador.whatsapp).replace(/\D/g, '');
             const msg = encodeURIComponent(`Olá! Vi seu anúncio no site do Vila Real Futsal.`);
             window.open(`https://wa.me/55${numero}?text=${msg}`, '_blank', 'noopener');
@@ -5955,6 +5986,7 @@
             const propagandas = Array.isArray(data.config?.propagandas) ? data.config.propagandas : [];
             const propaganda = propagandas[propagandaIndiceAtual];
             if (!propaganda || !propaganda.whatsapp) return;
+            registrarCliqueAnuncio('propaganda', propaganda.id);
             const numero = String(propaganda.whatsapp).replace(/\D/g, '');
             const msg = encodeURIComponent(`Olá! Vi sua propaganda no site do Vila Real Futsal.`);
             window.open(`https://wa.me/55${numero}?text=${msg}`, '_blank', 'noopener');
@@ -6103,6 +6135,7 @@
                 document.getElementById('loginContainer').style.display='none';
                 document.getElementById('sidebar').style.display='flex';
                 document.getElementById('mainContent').style.display='block';
+                document.getElementById('sidebarToggle').style.display='';
                 document.getElementById('userName').textContent=currentUser.nome;
                 document.getElementById('userRole').textContent=formatarPerfil(currentUser.perfil);
                 document.getElementById('userAvatar').textContent=currentUser.nome.charAt(0).toUpperCase();
@@ -6178,12 +6211,14 @@
             fecharScanner();
             document.getElementById('sidebar').style.display = 'none';
             document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('sidebarToggle').style.display = 'none';
             document.getElementById('whatsappFloat').style.display = 'none';
-            document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('loginForm').reset();
-            aplicarPersonalizacaoCompleta();
             showToast('Desconectado');
             closeSidebar();
+            // Ao sair, volta para a página inicial pública — não direto pro
+            // formulário de login.
+            showLandingPage();
         }
 
         // ============================================================
@@ -6934,6 +6969,59 @@
             saveData();
             renderizarConquistasAdmin();
             showToast('Foto removida.');
+        }
+
+        // ---- Relatório de cliques (propaganda + patrocinadores) ----
+        // Busca as contagens (tabela isolada, própria do site) e cruza com o
+        // nome atual de cada propaganda/patrocinador guardado em data.config
+        // — assim o relatório mostra "Mercado Central: 12 cliques" em vez de
+        // só o ID interno.
+        async function carregarRelatorioCliques() {
+            const container = document.getElementById('relatorioCliquesContainer');
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            container.innerHTML = '<p style="font-size:12px;color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Carregando...</p>';
+            try {
+                const resultado = await apiFetch('/relatorio-cliques');
+                const dados = Array.isArray(resultado.dados) ? resultado.dados : [];
+
+                const propagandas = Array.isArray(data.config.propagandas) ? data.config.propagandas : [];
+                const patrocinadores = Array.isArray(data.config.patrocinadores) ? data.config.patrocinadores : [];
+
+                const linhas = dados.map(d => {
+                    const lista = d.tipo === 'propaganda' ? propagandas : patrocinadores;
+                    const item = lista.find(x => x.id === d.anuncio_id);
+                    const nome = item ? (item.nome || (d.tipo === 'propaganda' ? 'Propaganda sem nome' : 'Patrocinador')) : '(removido)';
+                    return { tipo: d.tipo, nome, total: d.total };
+                }).sort((a, b) => b.total - a.total);
+
+                if (linhas.length === 0) {
+                    container.innerHTML = '<p style="font-size:12px;color:var(--gray-dark);">Ainda não há cliques registrados.</p>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="background:var(--primary);color:white;">
+                                <th style="padding:8px 12px;text-align:left;">Tipo</th>
+                                <th style="padding:8px 12px;text-align:left;">Nome</th>
+                                <th style="padding:8px 12px;text-align:center;">Cliques</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${linhas.map(l => `
+                                <tr style="border-bottom:1px solid #e5e7eb;">
+                                    <td style="padding:8px 12px;">${l.tipo === 'propaganda' ? 'Propaganda' : 'Patrocinador'}</td>
+                                    <td style="padding:8px 12px;">${escapeHtml(l.nome)}</td>
+                                    <td style="padding:8px 12px;text-align:center;font-weight:700;">${l.total}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (erro) {
+                container.innerHTML = `<p style="font-size:12px;color:#ef4444;">❌ ${erro.message || 'Não foi possível carregar o relatório'}</p>`;
+            }
         }
 
         function renderizarPatrocinadoresAdmin() {
@@ -10739,6 +10827,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     document.getElementById('loginContainer').style.display = 'none';
                     document.getElementById('sidebar').style.display = 'flex';
                     document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('sidebarToggle').style.display = '';
 
                     document.getElementById('userName').textContent = currentUser.nome;
                     document.getElementById('userRole').textContent = formatarPerfil(currentUser.perfil);
