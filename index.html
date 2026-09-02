@@ -8,6 +8,9 @@
     <meta http-equiv="Expires" content="0">
     <title>Vila Real Futsal - Gestão</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
@@ -2401,6 +2404,784 @@
             font-size: 11px;
             color: var(--gray-dark);
         }
+
+
+        /* ============================================================
+           LANDING PAGE PÚBLICA — página institucional antes do login
+           Conceito: energia esportiva, seções diagonais, "placar" de
+           números grandes em vez de barras técnicas, tipografia forte
+           (Poppins) reservada só pra títulos de impacto.
+           ============================================================ */
+        :root {
+            --landing-accent: #16a34a;
+            --landing-accent-dark: #0f7a37;
+            --landing-cream: #fdfaf3;
+        }
+
+        .landing-page {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--landing-cream);
+            color: #1a1a1a;
+        }
+
+        .landing-page h1, .landing-page h2, .landing-page h3,
+        .landing-page .landing-display {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+
+        /* ---- Barra de contato (fina, no topo) ---- */
+        .landing-topbar {
+            background: #0a1220;
+            color: rgba(255,255,255,0.75);
+            font-size: 12.5px;
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .landing-topbar .topbar-contato {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .landing-topbar .topbar-contato span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .landing-topbar .topbar-social {
+            display: flex;
+            gap: 14px;
+        }
+
+        .landing-topbar .topbar-social a {
+            color: rgba(255,255,255,0.75);
+            transition: color 0.2s;
+        }
+
+        .landing-topbar .topbar-social a:hover {
+            color: var(--landing-accent);
+        }
+
+        /* ---- Navegação ---- */
+        .landing-nav {
+            background: var(--primary, #0f1b2d);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+        }
+
+        .landing-nav .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .landing-nav .nav-brand .nav-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--secondary, #d4a020);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--primary, #0f1b2d);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .landing-nav .nav-brand .nav-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .landing-nav .nav-brand span {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 17px;
+            letter-spacing: 0.3px;
+        }
+
+        .landing-nav .nav-brand span em {
+            font-style: normal;
+            color: var(--secondary, #d4a020);
+        }
+
+        .landing-nav .nav-links {
+            display: flex;
+            gap: 26px;
+            align-items: center;
+        }
+
+        .landing-nav .nav-links a {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .landing-nav .nav-links a:hover {
+            color: var(--secondary, #d4a020);
+        }
+
+        .landing-nav .nav-cta {
+            display: flex;
+            gap: 10px;
+        }
+
+        .landing-nav .nav-cta .btn {
+            padding: 9px 18px;
+            font-size: 13px;
+        }
+
+        .landing-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        /* ---- Hero ---- */
+        .landing-hero {
+            position: relative;
+            background: linear-gradient(120deg, var(--primary, #0f1b2d) 0%, #1a2d4a 55%, var(--landing-accent-dark) 130%);
+            padding: 70px 24px 110px;
+            overflow: hidden;
+        }
+
+        .landing-hero.tem-imagem-fundo {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .landing-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(15,27,45,0.92) 0%, rgba(15,27,45,0.55) 65%, rgba(15,27,45,0.88) 100%);
+            pointer-events: none;
+        }
+
+        .landing-hero .hero-grid {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 46px;
+            flex-wrap: wrap;
+        }
+
+        .landing-hero .hero-inner {
+            flex: 1.05;
+            min-width: 280px;
+            text-align: left;
+        }
+
+        .landing-hero .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212,160,32,0.16);
+            border: 1px solid rgba(212,160,32,0.4);
+            color: var(--secondary, #d4a020);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .landing-hero h1 {
+            font-size: clamp(30px, 4.6vw, 50px);
+            font-weight: 900;
+            line-height: 1.1;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .landing-hero h1 em {
+            font-style: normal;
+            color: var(--secondary, #d4a020);
+        }
+
+        .landing-hero p.hero-sub {
+            margin-top: 18px;
+            color: rgba(255,255,255,0.78);
+            font-size: 16.5px;
+            line-height: 1.6;
+            max-width: 480px;
+        }
+
+        .landing-hero .hero-cta-row {
+            display: flex;
+            gap: 14px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .landing-hero .hero-cta-row .btn {
+            padding: 15px 30px;
+            font-size: 15px;
+        }
+
+        .landing-hero .hero-cta-row .btn-outline-light {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+        }
+
+        .landing-hero .hero-cta-row .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        /* ---- Painel de propaganda (topo, lado direito do hero) ---- */
+        .hero-ad-panel {
+            flex: 0.95;
+            min-width: 280px;
+            max-width: 460px;
+            width: 100%;
+        }
+
+        .hero-ad-panel .ad-panel-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.55);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+        }
+
+        .hero-ad-panel .ad-panel-label i {
+            color: var(--landing-accent);
+        }
+
+        /* Espaço generoso pra imagem/gif rodar bem — mais quadrado/alto do
+           que um banner fino, pra não ficar apertado. */
+        .hero-ad-panel .patrocinio-carrossel {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 4 / 3.2;
+            box-shadow: 0 16px 46px rgba(0,0,0,0.35);
+        }
+
+        .hero-ad-panel .patrocinio-dots {
+            margin-top: 12px;
+        }
+
+        /* Divisor diagonal entre o hero e a seção de placar */
+        .landing-hero-diagonal {
+            position: absolute;
+            left: 0; right: 0; bottom: -1px;
+            height: 70px;
+            background: var(--landing-cream);
+            clip-path: polygon(0 100%, 100% 40%, 100% 100%);
+        }
+
+        /* ---- Placar (estatísticas) ---- */
+        .landing-stats {
+            max-width: 1100px;
+            margin: -64px auto 0;
+            position: relative;
+            z-index: 2;
+            padding: 0 24px;
+        }
+
+        .landing-stats .stats-grid {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(15,27,45,0.15);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .landing-stats .stat-item {
+            text-align: center;
+            padding: 30px 16px;
+            border-right: 1px solid #eef0f3;
+        }
+
+        .landing-stats .stat-item:last-child {
+            border-right: none;
+        }
+
+        .landing-stats .stat-item .stat-numero {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: clamp(26px, 3.4vw, 36px);
+            color: var(--primary, #0f1b2d);
+            line-height: 1;
+        }
+
+        .landing-stats .stat-item .stat-label {
+            margin-top: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--gray-dark, #6b7280);
+        }
+
+        /* ---- Seções gerais ---- */
+        .landing-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 24px 20px;
+        }
+
+        .landing-section-header {
+            text-align: center;
+            max-width: 560px;
+            margin: 0 auto 44px;
+        }
+
+        .landing-section-header .section-eyebrow {
+            color: var(--landing-accent);
+            font-weight: 700;
+            font-size: 13.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .landing-section-header .section-eyebrow::before,
+        .landing-section-header .section-eyebrow::after {
+            content: '';
+            width: 22px;
+            height: 2px;
+            background: var(--landing-accent);
+        }
+
+        .landing-section-header h2 {
+            font-size: clamp(24px, 3.4vw, 32px);
+            font-weight: 800;
+            color: var(--primary, #0f1b2d);
+            margin-top: 10px;
+        }
+
+        /* ---- Nossa história ---- */
+        .landing-historia {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .landing-historia .historia-imagem-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+            max-width: 440px;
+        }
+
+        .landing-historia .historia-imagem-wrap::before {
+            content: '';
+            position: absolute;
+            top: -18px; left: -18px;
+            width: 100%; height: 100%;
+            background: var(--secondary, #d4a020);
+            border-radius: 18px;
+            z-index: 0;
+        }
+
+        .landing-historia .historia-imagem {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            aspect-ratio: 4/3.2;
+            object-fit: cover;
+            border-radius: 18px;
+            display: block;
+            background: var(--gray, #eef1f5);
+        }
+
+        .landing-historia .historia-texto-col {
+            flex: 1.1;
+            min-width: 280px;
+        }
+
+        .landing-historia .historia-texto-col h2 {
+            font-size: clamp(24px, 3.2vw, 30px);
+            font-weight: 800;
+            color: var(--primary, #0f1b2d);
+            margin-bottom: 16px;
+        }
+
+        .landing-historia .historia-texto-col p {
+            color: #4b5563;
+            line-height: 1.75;
+            font-size: 15px;
+            white-space: pre-wrap;
+        }
+
+        /* ---- Conquistas (galeria) ---- */
+        .landing-conquistas {
+            background: var(--primary, #0f1b2d);
+            padding: 90px 24px;
+            position: relative;
+        }
+
+        /* Borda diagonal decorativa no topo — usa um elemento próprio com
+           altura FIXA (não clip-path na seção inteira): um clip-path baseado
+           em % da altura total quebra quando o conteúdo abaixo dele muda de
+           tamanho depois da primeira renderização (poucas fotos na galeria
+           fazem a seção antes ficar muito mais baixa que 100vh, e o corte
+           "come" o conteúdo inteiro). Com altura fixa, isso nunca acontece. */
+        .landing-conquistas::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background: var(--landing-cream);
+            clip-path: polygon(0 0, 100% 0, 100% 28px, 0 100%);
+        }
+
+        .landing-conquistas .landing-section {
+            padding-top: 0;
+        }
+
+        .landing-conquistas .landing-section-header h2 {
+            color: white;
+        }
+
+        .conquistas-grid {
+            display: grid;
+            /* minmax com teto fixo (não "1fr") — impede que 1 ou 2 fotos
+               isoladas esticassem e ficassem enormes por preencher a largura
+               toda; a partir de 4 fotos, o grid usa a largura normalmente. */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .conquista-card {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: default;
+            background: #1a2d4a;
+        }
+
+        .conquista-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .conquista-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .conquista-card .conquista-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.05) 55%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            color: white;
+        }
+
+        .conquista-card .conquista-titulo {
+            font-weight: 700;
+            font-size: 14.5px;
+        }
+
+        .conquista-card .conquista-data {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .conquistas-vazio {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            padding: 40px;
+            font-size: 13.5px;
+        }
+
+        /* ---- Patrocinadores ---- */
+        .landing-patrocinio {
+            background: var(--landing-cream);
+        }
+
+        .patrocinio-carrossel {
+            position: relative;
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #0f1b2d;
+            box-shadow: 0 14px 50px rgba(15,27,45,0.14);
+            aspect-ratio: 16/6;
+            cursor: pointer;
+        }
+
+        .patrocinio-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        .patrocinio-slide.ativo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .patrocinio-slide img,
+        .patrocinio-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .patrocinio-slide .patrocinio-nome-tag {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 20px 14px 8px;
+            pointer-events: none;
+        }
+
+        .patrocinio-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 14px;
+        }
+
+        .patrocinio-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .patrocinio-dots .dot.ativo {
+            background: var(--landing-accent);
+            width: 22px;
+            border-radius: 5px;
+        }
+
+        .patrocinio-vazio {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            padding: 30px;
+            font-size: 13px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---- Rodapé ---- */
+        .landing-footer {
+            background: #0a1220;
+            color: rgba(255,255,255,0.6);
+            padding: 40px 24px 22px;
+            text-align: center;
+        }
+
+        .landing-footer .footer-brand {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .landing-footer .footer-brand em {
+            font-style: normal;
+            color: var(--secondary, #d4a020);
+        }
+
+        .landing-footer .footer-social {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 18px 0;
+        }
+
+        .landing-footer .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        .landing-footer .footer-social a:hover {
+            background: var(--landing-accent);
+        }
+
+        .landing-footer .footer-copy {
+            font-size: 12px;
+            margin-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 16px;
+        }
+
+        /* ---- Administração: galeria de conquistas ---- */
+        .conquista-item-admin {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            background: var(--gray, #eef1f5);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .conquista-item-admin .conquista-preview {
+            width: 90px;
+            height: 68px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0f1b2d;
+            flex-shrink: 0;
+        }
+
+        .conquista-item-admin .conquista-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .conquista-item-admin .conquista-dados {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .conquista-item-admin .conquista-dados .nome {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary, #0f1b2d);
+        }
+
+        .conquista-item-admin .conquista-dados .data {
+            font-size: 12px;
+            color: var(--gray-dark, #6b7280);
+        }
+
+        .patrocinador-item-admin {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            background: var(--gray, #eef1f5);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .patrocinador-item-admin .patrocinador-preview {
+            width: 90px;
+            height: 56px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0f1b2d;
+            flex-shrink: 0;
+        }
+
+        .patrocinador-item-admin .patrocinador-preview img,
+        .patrocinador-item-admin .patrocinador-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .patrocinador-item-admin .patrocinador-dados {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .patrocinador-item-admin .patrocinador-dados .nome {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary, #0f1b2d);
+        }
+
+        .patrocinador-item-admin .patrocinador-dados .whats {
+            font-size: 12px;
+            color: var(--gray-dark, #6b7280);
+        }
+
+        @media (max-width: 900px) {
+            .landing-nav .nav-links { display: none; }
+            .landing-nav-toggle { display: block; }
+            .landing-nav.menu-aberto .nav-links {
+                display: flex;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: var(--primary, #0f1b2d);
+                flex-direction: column;
+                padding: 16px 24px;
+                gap: 14px;
+            }
+            .landing-stats .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .landing-stats .stat-item:nth-child(2) { border-right: none; }
+            .landing-stats .stat-item { border-bottom: 1px solid #eef0f3; }
+            .landing-hero .hero-grid { flex-direction: column; }
+            .landing-hero .hero-inner { text-align: center; }
+            .landing-hero p.hero-sub { margin-left: auto; margin-right: auto; }
+            .landing-hero .hero-cta-row { justify-content: center; }
+            .hero-ad-panel { max-width: 420px; margin: 0 auto; }
+        }
+
+        @media (max-width: 640px) {
+            .landing-topbar { justify-content: center; text-align: center; }
+            .landing-topbar .topbar-contato { justify-content: center; }
+            .landing-hero { padding: 50px 20px 100px; }
+            .landing-hero .hero-cta-row .btn { flex: 1; min-width: 130px; justify-content: center; }
+            .landing-historia { flex-direction: column; }
+            .landing-historia .historia-imagem-wrap { max-width: 100%; }
+            .landing-section { padding: 56px 20px 10px; }
+            .landing-conquistas { padding: 60px 20px; }
+        }
+
     </style>
 </head>
 <body>
@@ -2428,7 +3209,112 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <!-- ===== LOGIN ===== -->
-    <div id="loginContainer" class="login-page">
+    <!-- ===== PÁGINA INSTITUCIONAL PÚBLICA (antes do login) ===== -->
+    <div id="landingPageContainer" class="landing-page">
+
+        <div class="landing-topbar">
+            <div class="topbar-contato">
+                <span id="landingContatoTelefone" style="display:none;"><i class="fas fa-phone"></i> <span></span></span>
+                <span id="landingContatoEmail" style="display:none;"><i class="fas fa-envelope"></i> <span></span></span>
+                <span id="landingContatoEndereco" style="display:none;"><i class="fas fa-map-marker-alt"></i> <span></span></span>
+            </div>
+            <div class="topbar-social" id="landingRedesSociais"></div>
+        </div>
+
+        <nav class="landing-nav" id="landingNav">
+            <div class="nav-brand">
+                <div class="nav-logo" id="landingLogo">⚽</div>
+                <span id="landingNomeClube">VILA <em>REAL</em></span>
+            </div>
+            <button class="landing-nav-toggle" onclick="document.getElementById('landingNav').classList.toggle('menu-aberto')">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a onclick="fecharMenuLandingEIrPara('landingHeroAncora')">Início</a>
+                <a onclick="fecharMenuLandingEIrPara('landingHistoriaSection')">Nossa História</a>
+                <a onclick="fecharMenuLandingEIrPara('landingConquistasSection')">Conquistas</a>
+                <a onclick="fecharMenuLandingEIrPara('landingPatrocinioSection')">Patrocinadores</a>
+            </div>
+            <div class="nav-cta">
+                <button class="btn btn-secondary" onclick="mostrarLoginDaLanding()">Já sou Aluno</button>
+                <button class="btn btn-primary" style="background:var(--landing-accent, #16a34a);" onclick="mostrarCadastroDaLanding()">Cadastre-se</button>
+            </div>
+        </nav>
+
+        <div class="landing-hero" id="landingHeroAncora">
+            <div class="hero-grid">
+                <div class="hero-inner">
+                    <span class="hero-eyebrow"><i class="fas fa-futbol"></i> Escola de Futsal</span>
+                    <h1 id="landingHeroTitulo">Craques de amanhã, <em>treinando hoje</em></h1>
+                    <p class="hero-sub" id="landingHeroSubtitulo">Formamos atletas com técnica, disciplina e paixão pelo futsal — dentro e fora das quadras.</p>
+                    <div class="hero-cta-row">
+                        <button class="btn btn-secondary" onclick="mostrarCadastroDaLanding()">
+                            <i class="fas fa-user-plus"></i> Cadastre-se Aqui
+                        </button>
+                        <button class="btn btn-outline-light" onclick="mostrarLoginDaLanding()">
+                            <i class="fas fa-sign-in-alt"></i> Já sou Aluno
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-ad-panel" id="landingPropagandaSection">
+                    <div class="ad-panel-label"><i class="fas fa-bullhorn"></i> Propaganda</div>
+                    <div class="patrocinio-carrossel" id="propagandaCarrossel" onclick="clicarPropagandaAtiva()">
+                        <div class="patrocinio-vazio" id="propagandaVazio">Nenhuma propaganda cadastrada no momento.</div>
+                    </div>
+                    <div class="patrocinio-dots" id="propagandaDots"></div>
+                </div>
+            </div>
+            <div class="landing-hero-diagonal"></div>
+        </div>
+
+        <div class="landing-stats">
+            <div class="stats-grid" id="landingStatsGrid"></div>
+        </div>
+
+        <div class="landing-section" id="landingHistoriaSection" style="display:none;">
+            <div class="landing-historia">
+                <div class="historia-imagem-wrap">
+                    <img id="historiaImagem" class="historia-imagem" src="" alt="História do time">
+                </div>
+                <div class="historia-texto-col">
+                    <h2 id="historiaTituloLabel">Nossa História</h2>
+                    <p id="historiaTexto"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="landing-conquistas" id="landingConquistasSection">
+            <div class="landing-section">
+                <div class="landing-section-header">
+                    <span class="section-eyebrow">Nossa trajetória</span>
+                    <h2>Conquistas e Momentos</h2>
+                </div>
+                <div class="conquistas-grid" id="conquistasGrid">
+                    <div class="conquistas-vazio">Em breve, fotos dos nossos títulos e melhores momentos em quadra.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="landing-section landing-patrocinio" id="landingPatrocinioSection">
+            <div class="landing-section-header">
+                <span class="section-eyebrow">Quem acredita no nosso time</span>
+                <h2>Patrocinadores</h2>
+            </div>
+            <div class="patrocinio-carrossel" id="patrocinioCarrossel" onclick="clicarPatrocinioAtivo()">
+                <div class="patrocinio-vazio" id="patrocinioVazio">Nenhum patrocinador cadastrado no momento.</div>
+            </div>
+            <div class="patrocinio-dots" id="patrocinioDots"></div>
+        </div>
+
+        <div class="landing-footer">
+            <div class="footer-brand" id="landingFooterNome">VILA <em>REAL</em> FUTSAL</div>
+            <div class="footer-social" id="landingFooterRedes"></div>
+            <div class="footer-copy">© 2026 Vila Real Futsal — Formando campeões dentro e fora das quadras.</div>
+        </div>
+    </div>
+
+
+    <div id="loginContainer" class="login-page" style="display:none;">
         <div class="login-box">
             <div class="login-brand">
                 <div class="logo-big" id="loginLogoBig">⚽</div>
@@ -2469,6 +3355,9 @@
 
             <div class="register-link" style="margin-top:8px;font-size:12px;color:#6b7280;">
                 <i class="fas fa-shield-alt"></i> Sistema seguro
+            </div>
+            <div class="register-link" style="margin-top:6px;font-size:12px;">
+                <a onclick="voltarParaLanding()"><i class="fas fa-arrow-left"></i> Voltar para o início</a>
             </div>
         </div>
     </div>
@@ -3120,6 +4009,9 @@
                     <button class="btn btn-secondary btn-sm" onclick="mostrarAbaPersonalizacao('cores')" id="tabCores">
                         <i class="fas fa-palette"></i> Cores
                     </button>
+                    <button class="btn btn-secondary btn-sm" onclick="mostrarAbaPersonalizacao('sitePublico')" id="tabSitePublico">
+                        <i class="fas fa-globe"></i> Site Público
+                    </button>
                 </div>
 
                 <div id="abaLogin" class="aba-personalizacao">
@@ -3392,6 +4284,213 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div id="abaSitePublico" class="aba-personalizacao" style="display:none;">
+                    <h4 style="margin-bottom:8px;color:var(--primary);">
+                        <i class="fas fa-flag"></i> Topo da Página (Hero)
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        A primeira coisa que o visitante vê ao entrar no site.
+                    </p>
+                    <div class="form-group">
+                        <label><i class="fas fa-heading"></i> Título de Destaque</label>
+                        <input type="text" id="heroTituloInput" placeholder="Ex: Craques de amanhã, treinando hoje">
+                        <small style="color:var(--gray-dark);font-size:11px;">Pode usar &lt;em&gt;texto&lt;/em&gt; ao redor de uma parte pra destacar em dourado.</small>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Subtítulo</label>
+                        <input type="text" id="heroSubtituloInput" placeholder="Ex: Formamos atletas com técnica, disciplina e paixão pelo futsal.">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-image"></i> Imagem de Fundo (opcional)</label>
+                        <div class="foto-upload-container">
+                            <div id="heroImagemFundoPreview" style="width:120px;height:70px;border-radius:8px;overflow:hidden;border:2px solid #e5e7eb;background:var(--gray);display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:11px;">Sem imagem</div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('heroImagemFundoInput').click()">
+                                <i class="fas fa-upload"></i> Escolher Imagem
+                            </button>
+                            <input type="file" id="heroImagemFundoInput" accept="image/*" style="display:none;" onchange="selecionarHeroImagemFundo(event)">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerHeroImagemFundo()">
+                                <i class="fas fa-undo"></i> Remover
+                            </button>
+                        </div>
+                        <small style="color:var(--gray-dark);font-size:11px;">Sem imagem, o fundo usa um gradiente com as cores do time.</small>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-chart-bar"></i> Números em Destaque (até 4)</label>
+                        <div id="heroEstatisticasLista"></div>
+                    </div>
+                    <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:24px;" onclick="salvarHeroConfig()">
+                        <i class="fas fa-save"></i> Salvar Topo da Página
+                    </button>
+
+                    <h4 style="margin:24px 0 8px;color:var(--primary);">
+                        <i class="fas fa-address-card"></i> Contato e Redes Sociais
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Aparecem na barra fina do topo e no rodapé do site. Deixe em branco o que não quiser mostrar.
+                    </p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Telefone</label>
+                            <input type="text" id="contatoTelefoneInput" placeholder="(11) 98765-4321">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> E-mail</label>
+                            <input type="email" id="contatoEmailInput" placeholder="contato@vilarealfutsal.com.br">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Endereço</label>
+                        <input type="text" id="contatoEnderecoInput" placeholder="Ex: Rua das Quadras, 123 - Centro">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fab fa-instagram"></i> Instagram</label>
+                            <input type="text" id="redeInstagramInput" placeholder="@vilarealfutsal">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook-f"></i> Facebook</label>
+                            <input type="text" id="redeFacebookInput" placeholder="vilarealfutsal">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
+                            <input type="text" id="redeWhatsappInput" placeholder="(11) 98765-4321">
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:24px;" onclick="salvarContatoERedes()">
+                        <i class="fas fa-save"></i> Salvar Contato e Redes
+                    </button>
+
+                    <h4 style="margin-bottom:8px;color:var(--primary);">
+                        <i class="fas fa-bullhorn"></i> Propaganda (topo da página, ao lado do título)
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Aparece bem no topo da página pública, ao lado do título principal. Aceita imagem, GIF ou vídeo curto. Ao clicar, o visitante é levado direto pro WhatsApp cadastrado.
+                    </p>
+                    <div id="listaPropagandasAdmin"></div>
+                    <div style="background:var(--gray);border-radius:12px;padding:16px;margin-top:12px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Nome/Descrição (opcional)</label>
+                                <input type="text" id="novaPropagandaNome" placeholder="Ex: Promoção de Matrículas">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-whatsapp"></i> WhatsApp (com DDD)</label>
+                                <input type="text" id="novaPropagandaWhatsapp" placeholder="(11) 98765-4321">
+                            </div>
+                        </div>
+                        <div class="foto-upload-container">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('propagandaImagemInput').click()">
+                                <i class="fas fa-image"></i> Imagem ou GIF
+                            </button>
+                            <input type="file" id="propagandaImagemInput" accept="image/*" style="display:none;" onchange="selecionarMidiaPropaganda(event,'imagem')">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('propagandaVideoInput').click()">
+                                <i class="fas fa-video"></i> Vídeo (curto, até ~18MB)
+                            </button>
+                            <input type="file" id="propagandaVideoInput" accept="video/*" style="display:none;" onchange="selecionarMidiaPropaganda(event,'video')">
+                        </div>
+                        <div id="novaPropagandaPreview" style="margin-top:10px;display:none;max-width:220px;border-radius:8px;overflow:hidden;"></div>
+                        <div id="novaPropagandaStatus" style="font-size:12px;margin-top:6px;"></div>
+                        <button class="btn btn-success btn-sm" style="margin-top:12px;" onclick="adicionarPropaganda()">
+                            <i class="fas fa-plus"></i> Adicionar Propaganda
+                        </button>
+                    </div>
+
+                    <h4 style="margin:28px 0 8px;color:var(--primary);">
+                        <i class="fas fa-star"></i> Patrocinadores (seção própria, mais abaixo na página)
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Aparece numa seção própria da página pública, com o carrossel de quem apoia o projeto. Ao clicar num patrocinador, o visitante é levado direto pro WhatsApp dele.
+                    </p>
+                    <div id="listaPatrocinadoresAdmin"></div>
+                    <div style="background:var(--gray);border-radius:12px;padding:16px;margin-top:12px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-building"></i> Nome do Patrocinador</label>
+                                <input type="text" id="novoPatrocinadorNome" placeholder="Ex: Mercado Central">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-whatsapp"></i> WhatsApp (com DDD)</label>
+                                <input type="text" id="novoPatrocinadorWhatsapp" placeholder="(11) 98765-4321">
+                            </div>
+                        </div>
+                        <div class="foto-upload-container">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('patrocinadorImagemInput').click()">
+                                <i class="fas fa-image"></i> Imagem ou GIF
+                            </button>
+                            <input type="file" id="patrocinadorImagemInput" accept="image/*" style="display:none;" onchange="selecionarMidiaPatrocinador(event,'imagem')">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('patrocinadorVideoInput').click()">
+                                <i class="fas fa-video"></i> Vídeo (curto, até ~18MB)
+                            </button>
+                            <input type="file" id="patrocinadorVideoInput" accept="video/*" style="display:none;" onchange="selecionarMidiaPatrocinador(event,'video')">
+                        </div>
+                        <div id="novoPatrocinadorPreview" style="margin-top:10px;display:none;max-width:220px;border-radius:8px;overflow:hidden;"></div>
+                        <div id="novoPatrocinadorStatus" style="font-size:12px;margin-top:6px;"></div>
+                        <button class="btn btn-success btn-sm" style="margin-top:12px;" onclick="adicionarPatrocinador()">
+                            <i class="fas fa-plus"></i> Adicionar Patrocinador
+                        </button>
+                    </div>
+
+                    <h4 style="margin:28px 0 8px;color:var(--primary);">
+                        <i class="fas fa-shield-alt"></i> História do Time
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Aparece na página pública, logo abaixo dos patrocinadores.
+                    </p>
+                    <div class="form-group">
+                        <label><i class="fas fa-heading"></i> Título da Seção</label>
+                        <input type="text" id="historiaTimeTitulo" placeholder="Ex: Nossa História" value="Nossa História">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Texto</label>
+                        <textarea id="historiaTimeTexto" rows="6" placeholder="Conte a história do time..." style="width:100%;padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-image"></i> Imagem (opcional)</label>
+                        <div class="foto-upload-container">
+                            <div id="historiaTimeImagemPreview" style="width:100px;height:100px;border-radius:10px;overflow:hidden;border:2px solid #e5e7eb;background:var(--gray);display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:12px;">Sem imagem</div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('historiaTimeImagemInput').click()">
+                                <i class="fas fa-upload"></i> Escolher Imagem
+                            </button>
+                            <input type="file" id="historiaTimeImagemInput" accept="image/*" style="display:none;" onchange="selecionarImagemHistoriaTime(event)">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerImagemHistoriaTime()">
+                                <i class="fas fa-undo"></i> Remover
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:24px;" onclick="salvarHistoriaTime()">
+                        <i class="fas fa-save"></i> Salvar História do Time
+                    </button>
+
+                    <h4 style="margin-bottom:8px;color:var(--primary);">
+                        <i class="fas fa-trophy"></i> Conquistas e Momentos (Galeria)
+                    </h4>
+                    <p style="font-size:12px;color:var(--gray-dark);margin-bottom:14px;">
+                        Fotos de campeonatos, jogos e conquistas — aparecem numa galeria na página pública.
+                    </p>
+                    <div id="listaConquistasAdmin"></div>
+                    <div style="background:var(--gray);border-radius:12px;padding:16px;margin-top:12px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-heading"></i> Título</label>
+                                <input type="text" id="novaConquistaTitulo" placeholder="Ex: Campeão Regional 2025">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Data (opcional)</label>
+                                <input type="text" id="novaConquistaData" placeholder="Ex: Outubro de 2025">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('conquistaImagemInput').click()">
+                            <i class="fas fa-image"></i> Escolher Foto
+                        </button>
+                        <input type="file" id="conquistaImagemInput" accept="image/*" style="display:none;" onchange="selecionarImagemConquista(event)">
+                        <div id="novaConquistaPreview" style="margin-top:10px;display:none;max-width:220px;border-radius:8px;overflow:hidden;"></div>
+                        <div id="novaConquistaStatus" style="font-size:12px;margin-top:6px;"></div>
+                        <button class="btn btn-success btn-sm" style="margin-top:12px;" onclick="adicionarConquista()">
+                            <i class="fas fa-plus"></i> Adicionar à Galeria
+                        </button>
                     </div>
                 </div>
 
@@ -3853,7 +4952,22 @@
                         secundaria: '#d4a020',
                         fundo: '#eef1f5',
                         texto: '#0f1b2d'
-                    }
+                    },
+                    patrocinadores: [],
+                    historiaTime: { titulo: 'Nossa História', texto: '', imagem: '' },
+                    heroTitulo: 'Craques de amanhã, <em>treinando hoje</em>',
+                    heroSubtitulo: 'Formamos atletas com técnica, disciplina e paixão pelo futsal — dentro e fora das quadras.',
+                    heroImagemFundo: '',
+                    heroEstatisticas: [
+                        { numero: '12+', label: 'Anos de Tradição' },
+                        { numero: '300+', label: 'Alunos Formados' },
+                        { numero: '8', label: 'Títulos Conquistados' },
+                        { numero: '6', label: 'Categorias' }
+                    ],
+                    conquistas: [],
+                    propagandas: [],
+                    contato: { telefone: '', email: '', endereco: '' },
+                    redesSociais: { instagram: '', facebook: '', whatsapp: '' }
                 },
                 proximoNumeroAluno: 1,
                 proximoNumeroUsuario: 2
@@ -4578,6 +5692,7 @@
         //  FUNÇÕES DE LOGIN
         // ============================================================
         function showLogin() {
+            document.getElementById('landingPageContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('registroUsuarioContainer').style.display = 'none';
             document.getElementById('recuperarSenhaContainer').style.display = 'none';
@@ -4590,6 +5705,7 @@
         }
 
         function showRegistroUsuario() {
+            document.getElementById('landingPageContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('registroUsuarioContainer').style.display = 'flex';
             document.getElementById('recuperarSenhaContainer').style.display = 'none';
@@ -4598,7 +5714,293 @@
             document.getElementById('registroSuccess').style.display = 'none';
         }
 
+        // ============================================================
+        //  LANDING PAGE PÚBLICA (institucional, antes do login)
+        // ============================================================
+        // Mostra a página institucional — ponto de entrada padrão para quem
+        // ainda não está logado. Os botões "Já sou Aluno" e "Cadastre-se
+        // Aqui" levam pro login/cadastro sem recarregar a página (mesmo
+        // padrão "flutuante" já usado entre login/cadastro/recuperar senha).
+        function showLandingPage() {
+            document.getElementById('landingPageContainer').style.display = 'block';
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registroUsuarioContainer').style.display = 'none';
+            document.getElementById('recuperarSenhaContainer').style.display = 'none';
+            document.getElementById('redefinirSenhaContainer').style.display = 'none';
+            renderizarLandingPage();
+        }
+
+        function mostrarLoginDaLanding() { showLogin(); }
+        function mostrarCadastroDaLanding() { showRegistroUsuario(); }
+        function voltarParaLanding() { showLandingPage(); }
+
+        function renderizarLandingPage() {
+            const config = data.config || {};
+
+            // Logo/título reaproveitam a mesma personalização da tela de login —
+            // usados no menu de navegação e no rodapé.
+            const logoHtml = config.loginLogo ? `<img src="${config.loginLogo}" alt="Logo">` : '⚽';
+            document.querySelectorAll('#landingLogo').forEach(el => el.innerHTML = logoHtml);
+            const tituloFormatado = formatarTituloComDestaque(config.loginTitle).replace('<span>', '<em>').replace('</span>', '</em>');
+            const nomeNav = document.getElementById('landingNomeClube');
+            if (nomeNav) nomeNav.innerHTML = tituloFormatado;
+            const nomeFooter = document.getElementById('landingFooterNome');
+            if (nomeFooter) nomeFooter.innerHTML = tituloFormatado + ' FUTSAL';
+
+            // Hero: título/subtítulo próprios da página institucional (podem ser
+            // diferentes do título curto usado na tela de login).
+            const heroTitulo = document.getElementById('landingHeroTitulo');
+            if (heroTitulo) heroTitulo.innerHTML = (config.heroTitulo || 'Craques de amanhã, <em>treinando hoje</em>');
+            const heroSub = document.getElementById('landingHeroSubtitulo');
+            if (heroSub) heroSub.textContent = config.heroSubtitulo || 'Formamos atletas com técnica, disciplina e paixão pelo futsal — dentro e fora das quadras.';
+            const heroEl = document.querySelector('.landing-hero');
+            if (heroEl) {
+                if (config.heroImagemFundo) {
+                    heroEl.classList.add('tem-imagem-fundo');
+                    heroEl.style.backgroundImage = `url(${config.heroImagemFundo})`;
+                } else {
+                    heroEl.classList.remove('tem-imagem-fundo');
+                    heroEl.style.backgroundImage = '';
+                }
+            }
+
+            renderizarStatsLanding();
+            renderizarContatoERedesLanding();
+            renderizarCarrosselPropagandas();
+            renderizarCarrosselPatrocinadores();
+            renderizarHistoriaTimePublica();
+            renderizarConquistasLanding();
+        }
+
+        // Fecha o menu mobile (se aberto) e rola suavemente até a seção — dá a
+        // sensação de navegação "flutuante" dentro da mesma página, sem recarregar nada.
+        function fecharMenuLandingEIrPara(idSecao) {
+            document.getElementById('landingNav')?.classList.remove('menu-aberto');
+            document.getElementById(idSecao)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ---- Placar de estatísticas do hero ----
+        const ESTATISTICAS_PADRAO_HERO = [
+            { numero: '12+', label: 'Anos de Tradição' },
+            { numero: '300+', label: 'Alunos Formados' },
+            { numero: '8', label: 'Títulos Conquistados' },
+            { numero: '6', label: 'Categorias' },
+        ];
+
+        function renderizarStatsLanding() {
+            const container = document.getElementById('landingStatsGrid');
+            if (!container) return;
+            const stats = Array.isArray(data.config?.heroEstatisticas) && data.config.heroEstatisticas.length > 0
+                ? data.config.heroEstatisticas : ESTATISTICAS_PADRAO_HERO;
+            container.innerHTML = stats.map(s => `
+                <div class="stat-item">
+                    <div class="stat-numero">${escapeHtml(s.numero)}</div>
+                    <div class="stat-label">${escapeHtml(s.label)}</div>
+                </div>
+            `).join('');
+        }
+
+        // ---- Contato e redes sociais (barra de topo + rodapé) ----
+        function renderizarContatoERedesLanding() {
+            const contato = data.config?.contato || {};
+            const mapaContato = [
+                ['landingContatoTelefone', contato.telefone],
+                ['landingContatoEmail', contato.email],
+                ['landingContatoEndereco', contato.endereco],
+            ];
+            mapaContato.forEach(([id, valor]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (valor) {
+                    el.style.display = 'inline-flex';
+                    el.querySelector('span').textContent = valor;
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+
+            const redes = data.config?.redesSociais || {};
+            const definicoesRedes = [
+                { chave: 'instagram', icone: 'fab fa-instagram', prefixo: 'https://instagram.com/' },
+                { chave: 'facebook', icone: 'fab fa-facebook-f', prefixo: 'https://facebook.com/' },
+                { chave: 'whatsapp', icone: 'fab fa-whatsapp', prefixo: 'https://wa.me/55' },
+            ];
+            const linksHtml = definicoesRedes
+                .filter(d => redes[d.chave])
+                .map(d => {
+                    const bruto = String(redes[d.chave]).trim();
+                    let href;
+                    if (bruto.startsWith('http')) {
+                        href = bruto;
+                    } else if (d.chave === 'whatsapp') {
+                        href = d.prefixo + bruto.replace(/\D/g, '');
+                    } else {
+                        href = d.prefixo + bruto.replace(/^@/, '');
+                    }
+                    return `<a href="${href}" target="_blank" rel="noopener"><i class="${d.icone}"></i></a>`;
+                }).join('');
+            const topbarSocial = document.getElementById('landingRedesSociais');
+            if (topbarSocial) topbarSocial.innerHTML = linksHtml;
+            const footerSocial = document.getElementById('landingFooterRedes');
+            if (footerSocial) footerSocial.innerHTML = linksHtml;
+        }
+
+        // ---- Carrossel de patrocinadores ----
+        let patrocinioIndiceAtual = 0;
+        let patrocinioTimer = null;
+
+        function renderizarCarrosselPatrocinadores() {
+            const container = document.getElementById('patrocinioCarrossel');
+            const dotsContainer = document.getElementById('patrocinioDots');
+            if (!container || !dotsContainer) return;
+
+            const patrocinadores = Array.isArray(data.config?.patrocinadores) ? data.config.patrocinadores : [];
+            if (patrocinioTimer) { clearInterval(patrocinioTimer); patrocinioTimer = null; }
+
+            if (patrocinadores.length === 0) {
+                container.innerHTML = '<div class="patrocinio-vazio" id="patrocinioVazio">Nenhum patrocinador cadastrado no momento.</div>';
+                dotsContainer.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = patrocinadores.map((p, i) => {
+                const nomeSeguro = escapeHtml(p.nome || 'Patrocinador');
+                const midiaHtml = !p.url ? '' : (p.tipo === 'video'
+                    ? `<video src="${p.url}" autoplay muted loop playsinline></video>`
+                    : `<img src="${p.url}" alt="${nomeSeguro}">`);
+                return `<div class="patrocinio-slide${i === 0 ? ' ativo' : ''}" data-indice="${i}">${midiaHtml}<div class="patrocinio-nome-tag">${nomeSeguro}</div></div>`;
+            }).join('');
+
+            dotsContainer.innerHTML = patrocinadores.map((_, i) =>
+                `<div class="dot${i === 0 ? ' ativo' : ''}" onclick="event.stopPropagation();irParaSlidePatrocinio(${i})"></div>`
+            ).join('');
+
+            patrocinioIndiceAtual = 0;
+            if (patrocinadores.length > 1) {
+                patrocinioTimer = setInterval(() => {
+                    irParaSlidePatrocinio((patrocinioIndiceAtual + 1) % patrocinadores.length);
+                }, 6000);
+            }
+        }
+
+        function irParaSlidePatrocinio(indice) {
+            const slides = document.querySelectorAll('#patrocinioCarrossel .patrocinio-slide');
+            const dots = document.querySelectorAll('#patrocinioDots .dot');
+            slides.forEach((s, i) => s.classList.toggle('ativo', i === indice));
+            dots.forEach((d, i) => d.classList.toggle('ativo', i === indice));
+            patrocinioIndiceAtual = indice;
+        }
+
+        // Clicar em qualquer parte do carrossel abre o WhatsApp do patrocinador
+        // exibido no momento — não precisa acertar num botão específico.
+        function clicarPatrocinioAtivo() {
+            const patrocinadores = Array.isArray(data.config?.patrocinadores) ? data.config.patrocinadores : [];
+            const patrocinador = patrocinadores[patrocinioIndiceAtual];
+            if (!patrocinador || !patrocinador.whatsapp) return;
+            const numero = String(patrocinador.whatsapp).replace(/\D/g, '');
+            const msg = encodeURIComponent(`Olá! Vi seu anúncio no site do Vila Real Futsal.`);
+            window.open(`https://wa.me/55${numero}?text=${msg}`, '_blank', 'noopener');
+        }
+
+        // ---- Painel de Propaganda (topo do hero) — distinto de Patrocinadores ----
+        // Mesmo formato visual, mas é uma lista separada: pensado pra anúncios
+        // avulsos/promoções, enquanto Patrocinadores é o apoio fixo do projeto.
+        let propagandaIndiceAtual = 0;
+        let propagandaTimer = null;
+
+        function renderizarCarrosselPropagandas() {
+            const container = document.getElementById('propagandaCarrossel');
+            const dotsContainer = document.getElementById('propagandaDots');
+            if (!container || !dotsContainer) return;
+
+            const propagandas = Array.isArray(data.config?.propagandas) ? data.config.propagandas : [];
+            if (propagandaTimer) { clearInterval(propagandaTimer); propagandaTimer = null; }
+
+            if (propagandas.length === 0) {
+                container.innerHTML = '<div class="patrocinio-vazio" id="propagandaVazio">Nenhuma propaganda cadastrada no momento.</div>';
+                dotsContainer.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = propagandas.map((p, i) => {
+                const nomeSeguro = escapeHtml(p.nome || 'Propaganda');
+                const midiaHtml = !p.url ? '' : (p.tipo === 'video'
+                    ? `<video src="${p.url}" autoplay muted loop playsinline></video>`
+                    : `<img src="${p.url}" alt="${nomeSeguro}">`);
+                return `<div class="patrocinio-slide${i === 0 ? ' ativo' : ''}" data-indice="${i}">${midiaHtml}${p.nome ? `<div class="patrocinio-nome-tag">${nomeSeguro}</div>` : ''}</div>`;
+            }).join('');
+
+            dotsContainer.innerHTML = propagandas.map((_, i) =>
+                `<div class="dot${i === 0 ? ' ativo' : ''}" onclick="event.stopPropagation();irParaSlidePropaganda(${i})"></div>`
+            ).join('');
+
+            propagandaIndiceAtual = 0;
+            if (propagandas.length > 1) {
+                propagandaTimer = setInterval(() => {
+                    irParaSlidePropaganda((propagandaIndiceAtual + 1) % propagandas.length);
+                }, 5000);
+            }
+        }
+
+        function irParaSlidePropaganda(indice) {
+            const slides = document.querySelectorAll('#propagandaCarrossel .patrocinio-slide');
+            const dots = document.querySelectorAll('#propagandaDots .dot');
+            slides.forEach((s, i) => s.classList.toggle('ativo', i === indice));
+            dots.forEach((d, i) => d.classList.toggle('ativo', i === indice));
+            propagandaIndiceAtual = indice;
+        }
+
+        // Clicar na propaganda ativa abre o WhatsApp cadastrado pra ela.
+        function clicarPropagandaAtiva() {
+            const propagandas = Array.isArray(data.config?.propagandas) ? data.config.propagandas : [];
+            const propaganda = propagandas[propagandaIndiceAtual];
+            if (!propaganda || !propaganda.whatsapp) return;
+            const numero = String(propaganda.whatsapp).replace(/\D/g, '');
+            const msg = encodeURIComponent(`Olá! Vi sua propaganda no site do Vila Real Futsal.`);
+            window.open(`https://wa.me/55${numero}?text=${msg}`, '_blank', 'noopener');
+        }
+
+        // ---- História do time (exibição pública) ----
+        function renderizarHistoriaTimePublica() {
+            const historia = data.config?.historiaTime || {};
+            const section = document.getElementById('landingHistoriaSection');
+            if (!section) return;
+            if (!historia.texto) { section.style.display = 'none'; return; }
+            section.style.display = 'block';
+            document.getElementById('historiaTituloLabel').textContent = historia.titulo || 'Nossa História';
+            document.getElementById('historiaTexto').textContent = historia.texto || '';
+            const wrap = document.querySelector('.historia-imagem-wrap');
+            const img = document.getElementById('historiaImagem');
+            if (historia.imagem) {
+                img.src = historia.imagem;
+                if (wrap) wrap.style.display = 'block';
+            } else {
+                if (wrap) wrap.style.display = 'none';
+            }
+        }
+
+        // ---- Conquistas e Momentos (galeria pública) ----
+        function renderizarConquistasLanding() {
+            const container = document.getElementById('conquistasGrid');
+            if (!container) return;
+            const conquistas = Array.isArray(data.config?.conquistas) ? data.config.conquistas : [];
+            if (conquistas.length === 0) {
+                container.innerHTML = '<div class="conquistas-vazio">Em breve, fotos dos nossos títulos e melhores momentos em quadra.</div>';
+                return;
+            }
+            container.innerHTML = conquistas.map(c => `
+                <div class="conquista-card">
+                    ${c.imagem ? `<img src="${c.imagem}" alt="${escapeHtml(c.titulo || '')}">` : ''}
+                    <div class="conquista-overlay">
+                        <div class="conquista-titulo">${escapeHtml(c.titulo || '')}</div>
+                        ${c.data ? `<div class="conquista-data">${escapeHtml(c.data)}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
         function showRecuperarSenha() {
+            document.getElementById('landingPageContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('registroUsuarioContainer').style.display = 'none';
             document.getElementById('recuperarSenhaContainer').style.display = 'flex';
@@ -4608,6 +6010,7 @@
         }
 
         function showRedefinirSenha() {
+            document.getElementById('landingPageContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('registroUsuarioContainer').style.display = 'none';
             document.getElementById('recuperarSenhaContainer').style.display = 'none';
@@ -5326,13 +6729,506 @@
             abaAtualPersonalizacao = aba;
             document.querySelectorAll('.aba-personalizacao').forEach(el => el.style.display = 'none');
             document.getElementById('aba' + aba.charAt(0).toUpperCase() + aba.slice(1)).style.display = 'block';
-            document.querySelectorAll('#tabLogin, #tabBotoes, #tabCores').forEach(el => {
+            document.querySelectorAll('#tabLogin, #tabBotoes, #tabCores, #tabSitePublico').forEach(el => {
                 el.classList.remove('active');
                 el.style.opacity = '0.7';
             });
             const tab = document.getElementById('tab' + aba.charAt(0).toUpperCase() + aba.slice(1));
             tab.classList.add('active');
             tab.style.opacity = '1';
+            if (aba === 'sitePublico') carregarAbaSitePublico();
+        }
+
+        // ============================================================
+        //  ADMINISTRAÇÃO DO SITE PÚBLICO (patrocinadores + história do time)
+        // ============================================================
+        function carregarAbaSitePublico() {
+            renderizarPropagandasAdmin();
+            renderizarPatrocinadoresAdmin();
+            renderizarConquistasAdmin();
+            const historia = data.config.historiaTime || {};
+            document.getElementById('historiaTimeTitulo').value = historia.titulo || 'Nossa História';
+            document.getElementById('historiaTimeTexto').value = historia.texto || '';
+            renderizarPreviewImagemHistoriaTime();
+
+            document.getElementById('heroTituloInput').value = data.config.heroTitulo || 'Craques de amanhã, <em>treinando hoje</em>';
+            document.getElementById('heroSubtituloInput').value = data.config.heroSubtitulo || '';
+            renderizarPreviewHeroImagemFundo();
+            renderizarHeroEstatisticasAdmin();
+
+            const contato = data.config.contato || {};
+            document.getElementById('contatoTelefoneInput').value = contato.telefone || '';
+            document.getElementById('contatoEmailInput').value = contato.email || '';
+            document.getElementById('contatoEnderecoInput').value = contato.endereco || '';
+            const redes = data.config.redesSociais || {};
+            document.getElementById('redeInstagramInput').value = redes.instagram || '';
+            document.getElementById('redeFacebookInput').value = redes.facebook || '';
+            document.getElementById('redeWhatsappInput').value = redes.whatsapp || '';
+        }
+
+        // ---- Hero: título/subtítulo/imagem/estatísticas ----
+        let heroImagemFundoTemp = undefined; // undefined = não mexeu; '' = remover; string = nova imagem
+        let heroEstatisticasEdicao = null; // cópia de trabalho enquanto a aba está aberta
+
+        function renderizarPreviewHeroImagemFundo() {
+            const preview = document.getElementById('heroImagemFundoPreview');
+            const imagemAtual = heroImagemFundoTemp !== undefined ? heroImagemFundoTemp : (data.config.heroImagemFundo || '');
+            preview.innerHTML = imagemAtual ? `<img src="${imagemAtual}" style="width:100%;height:100%;object-fit:cover;">` : 'Sem imagem';
+        }
+
+        function selecionarHeroImagemFundo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            redimensionarImagem(file, 1600, 0.85, 'image/jpeg').then((dataUrl) => {
+                heroImagemFundoTemp = dataUrl;
+                renderizarPreviewHeroImagemFundo();
+            }).catch(() => showToast('❌ Não foi possível processar a imagem', 'error'));
+        }
+
+        function removerHeroImagemFundo() {
+            heroImagemFundoTemp = '';
+            renderizarPreviewHeroImagemFundo();
+        }
+
+        function renderizarHeroEstatisticasAdmin() {
+            if (!heroEstatisticasEdicao) {
+                const atuais = Array.isArray(data.config.heroEstatisticas) ? data.config.heroEstatisticas : ESTATISTICAS_PADRAO_HERO;
+                heroEstatisticasEdicao = atuais.map(s => ({ ...s }));
+            }
+            const container = document.getElementById('heroEstatisticasLista');
+            container.innerHTML = heroEstatisticasEdicao.map((s, i) => `
+                <div style="display:flex;gap:8px;margin-bottom:8px;">
+                    <input type="text" value="${escapeHtml(s.numero)}" placeholder="Ex: 12+" style="width:80px;padding:8px;border:2px solid #e5e7eb;border-radius:8px;" oninput="heroEstatisticasEdicao[${i}].numero=this.value">
+                    <input type="text" value="${escapeHtml(s.label)}" placeholder="Ex: Anos de Tradição" style="flex:1;padding:8px;border:2px solid #e5e7eb;border-radius:8px;" oninput="heroEstatisticasEdicao[${i}].label=this.value">
+                </div>
+            `).join('');
+        }
+
+        async function salvarHeroConfig() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            data.config.heroTitulo = document.getElementById('heroTituloInput').value.trim() || 'Craques de amanhã, <em>treinando hoje</em>';
+            data.config.heroSubtitulo = document.getElementById('heroSubtituloInput').value.trim();
+            data.config.heroEstatisticas = (heroEstatisticasEdicao || []).filter(s => s.numero && s.label);
+
+            if (heroImagemFundoTemp !== undefined) {
+                if (heroImagemFundoTemp === '') {
+                    data.config.heroImagemFundo = '';
+                } else {
+                    try {
+                        const resultado = await apiFetch('/upload-imagem', {
+                            method: 'POST',
+                            body: JSON.stringify({ imagemBase64: heroImagemFundoTemp, tipo: 'hero' }),
+                        });
+                        data.config.heroImagemFundo = resultado.url;
+                    } catch (erro) {
+                        showToast('❌ ' + (erro.message || 'Falha ao enviar imagem'), 'error');
+                        return;
+                    }
+                }
+                heroImagemFundoTemp = undefined;
+            }
+
+            await saveData();
+            showToast('✅ Topo da página salvo!');
+        }
+
+        // ---- Contato e redes sociais (administração) ----
+        async function salvarContatoERedes() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            data.config.contato = {
+                telefone: document.getElementById('contatoTelefoneInput').value.trim(),
+                email: document.getElementById('contatoEmailInput').value.trim(),
+                endereco: document.getElementById('contatoEnderecoInput').value.trim(),
+            };
+            data.config.redesSociais = {
+                instagram: document.getElementById('redeInstagramInput').value.trim(),
+                facebook: document.getElementById('redeFacebookInput').value.trim(),
+                whatsapp: document.getElementById('redeWhatsappInput').value.trim(),
+            };
+            await saveData();
+            showToast('✅ Contato e redes sociais salvos!');
+        }
+
+        // ---- Conquistas e Momentos (administração) ----
+        function renderizarConquistasAdmin() {
+            const container = document.getElementById('listaConquistasAdmin');
+            if (!container) return;
+            const conquistas = Array.isArray(data.config.conquistas) ? data.config.conquistas : [];
+            if (conquistas.length === 0) {
+                container.innerHTML = '<p style="font-size:12px;color:var(--gray-dark);">Nenhuma foto na galeria ainda.</p>';
+                return;
+            }
+            container.innerHTML = conquistas.map(c => `
+                <div class="conquista-item-admin">
+                    <div class="conquista-preview"><img src="${c.imagem}" alt="${escapeHtml(c.titulo || '')}"></div>
+                    <div class="conquista-dados">
+                        <div class="nome">${escapeHtml(c.titulo || '')}</div>
+                        ${c.data ? `<div class="data">${escapeHtml(c.data)}</div>` : ''}
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="removerConquista('${c.id}')"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        let novaConquistaImagemTemp = null;
+
+        function selecionarImagemConquista(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const statusEl = document.getElementById('novaConquistaStatus');
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Carregando...</span>';
+            redimensionarImagem(file, 1200, 0.86, 'image/jpeg').then((dataUrl) => {
+                novaConquistaImagemTemp = dataUrl;
+                const preview = document.getElementById('novaConquistaPreview');
+                preview.style.display = 'block';
+                preview.innerHTML = `<img src="${dataUrl}" style="width:100%;display:block;">`;
+                statusEl.innerHTML = '<span style="color:#22c55e;">✅ Pronto para adicionar.</span>';
+            }).catch(() => {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Não foi possível processar a imagem.</span>';
+            });
+        }
+
+        async function adicionarConquista() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            const titulo = document.getElementById('novaConquistaTitulo').value.trim();
+            const dataTexto = document.getElementById('novaConquistaData').value.trim();
+            const statusEl = document.getElementById('novaConquistaStatus');
+
+            if (!titulo) { showToast('Dê um título pra essa conquista', 'error'); return; }
+            if (!novaConquistaImagemTemp) { showToast('Escolha uma foto', 'error'); return; }
+
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Enviando...</span>';
+            try {
+                const resultado = await apiFetch('/upload-imagem', {
+                    method: 'POST',
+                    body: JSON.stringify({ imagemBase64: novaConquistaImagemTemp, tipo: 'conquista' }),
+                });
+                if (!Array.isArray(data.config.conquistas)) data.config.conquistas = [];
+                data.config.conquistas.push({
+                    id: 'conquista_' + Date.now(),
+                    titulo,
+                    data: dataTexto,
+                    imagem: resultado.url,
+                });
+                await saveData();
+
+                document.getElementById('novaConquistaTitulo').value = '';
+                document.getElementById('novaConquistaData').value = '';
+                document.getElementById('novaConquistaPreview').style.display = 'none';
+                document.getElementById('novaConquistaPreview').innerHTML = '';
+                document.getElementById('conquistaImagemInput').value = '';
+                novaConquistaImagemTemp = null;
+                statusEl.innerHTML = '';
+
+                renderizarConquistasAdmin();
+                showToast('✅ Foto adicionada à galeria!');
+            } catch (erro) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ ' + (erro.message || 'Falha ao enviar') + '</span>';
+            }
+        }
+
+        function removerConquista(id) {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            if (!confirm('Remover esta foto da galeria de conquistas?')) return;
+            data.config.conquistas = (data.config.conquistas || []).filter(c => c.id !== id);
+            saveData();
+            renderizarConquistasAdmin();
+            showToast('Foto removida.');
+        }
+
+        function renderizarPatrocinadoresAdmin() {
+            const container = document.getElementById('listaPatrocinadoresAdmin');
+            if (!container) return;
+            const patrocinadores = Array.isArray(data.config.patrocinadores) ? data.config.patrocinadores : [];
+            if (patrocinadores.length === 0) {
+                container.innerHTML = '<p style="font-size:12px;color:var(--gray-dark);">Nenhum patrocinador cadastrado ainda.</p>';
+                return;
+            }
+            container.innerHTML = patrocinadores.map(p => {
+                const nomeSeguro = escapeHtml(p.nome || 'Patrocinador');
+                const midiaHtml = p.tipo === 'video'
+                    ? `<video src="${p.url}" muted></video>`
+                    : `<img src="${p.url}" alt="${nomeSeguro}">`;
+                return `
+                    <div class="patrocinador-item-admin">
+                        <div class="patrocinador-preview">${midiaHtml}</div>
+                        <div class="patrocinador-dados">
+                            <div class="nome">${nomeSeguro} <span style="opacity:0.5;font-weight:400;">(${p.tipo === 'video' ? 'vídeo' : 'imagem'})</span></div>
+                            <div class="whats"><i class="fab fa-whatsapp"></i> ${escapeHtml(p.whatsapp || 'sem WhatsApp')}</div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" onclick="removerPatrocinador('${p.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Guarda a mídia já convertida (base64) até o admin clicar em "Adicionar
+        // Patrocinador" — evita subir pro Storage uma mídia que pode nem ser
+        // usada, caso o admin desista ou troque de arquivo antes de salvar.
+        let novoPatrocinadorMidiaTemp = null; // { tipo: 'imagem'|'video', dataUrl }
+
+        function selecionarMidiaPatrocinador(event, tipo) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const statusEl = document.getElementById('novoPatrocinadorStatus');
+            const previewEl = document.getElementById('novoPatrocinadorPreview');
+
+            if (tipo === 'video' && file.size > 18 * 1024 * 1024) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Vídeo muito grande (máx. ~18MB). Comprima ou use um vídeo mais curto.</span>';
+                event.target.value = '';
+                return;
+            }
+
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Carregando...</span>';
+
+            if (tipo === 'imagem') {
+                // Imagens/gifs passam pela mesma redução de tamanho já usada no
+                // resto do sistema — mantém o painel leve mesmo com fotos grandes.
+                redimensionarImagem(file, 1200, 0.88, file.type === 'image/gif' ? 'image/gif' : 'image/jpeg').then((dataUrl) => {
+                    novoPatrocinadorMidiaTemp = { tipo: 'imagem', dataUrl };
+                    previewEl.style.display = 'block';
+                    previewEl.innerHTML = `<img src="${dataUrl}" style="width:100%;display:block;">`;
+                    statusEl.innerHTML = '<span style="color:#22c55e;">✅ Pronto para adicionar.</span>';
+                }).catch(() => {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ Não foi possível processar a imagem.</span>';
+                });
+            } else {
+                // Vídeo não passa por canvas (perderia o áudio/formato) — vai
+                // direto em base64, dentro do limite validado acima.
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    novoPatrocinadorMidiaTemp = { tipo: 'video', dataUrl: e.target.result };
+                    previewEl.style.display = 'block';
+                    previewEl.innerHTML = `<video src="${e.target.result}" style="width:100%;display:block;" muted autoplay loop></video>`;
+                    statusEl.innerHTML = '<span style="color:#22c55e;">✅ Pronto para adicionar.</span>';
+                };
+                reader.onerror = () => {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ Não foi possível ler o vídeo.</span>';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function adicionarPatrocinador() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            const nome = document.getElementById('novoPatrocinadorNome').value.trim();
+            const whatsapp = document.getElementById('novoPatrocinadorWhatsapp').value.trim();
+            const statusEl = document.getElementById('novoPatrocinadorStatus');
+
+            if (!nome || !whatsapp) { showToast('Preencha nome e WhatsApp', 'error'); return; }
+            if (!novoPatrocinadorMidiaTemp) { showToast('Escolha uma imagem, gif ou vídeo', 'error'); return; }
+
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Enviando...</span>';
+            try {
+                const resultado = await apiFetch('/upload-midia-patrocinador', {
+                    method: 'POST',
+                    body: JSON.stringify({ midiaBase64: novoPatrocinadorMidiaTemp.dataUrl }),
+                });
+                if (!Array.isArray(data.config.patrocinadores)) data.config.patrocinadores = [];
+                data.config.patrocinadores.push({
+                    id: 'patrocinador_' + Date.now(),
+                    nome,
+                    whatsapp,
+                    tipo: novoPatrocinadorMidiaTemp.tipo,
+                    url: resultado.url,
+                });
+                await saveData();
+
+                document.getElementById('novoPatrocinadorNome').value = '';
+                document.getElementById('novoPatrocinadorWhatsapp').value = '';
+                document.getElementById('novoPatrocinadorPreview').style.display = 'none';
+                document.getElementById('novoPatrocinadorPreview').innerHTML = '';
+                document.getElementById('patrocinadorImagemInput').value = '';
+                document.getElementById('patrocinadorVideoInput').value = '';
+                novoPatrocinadorMidiaTemp = null;
+                statusEl.innerHTML = '';
+
+                renderizarPatrocinadoresAdmin();
+                showToast('✅ Patrocinador adicionado!');
+            } catch (erro) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ ' + (erro.message || 'Falha ao enviar') + '</span>';
+            }
+        }
+
+        function removerPatrocinador(id) {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            if (!confirm('Remover este patrocinador do painel de propaganda?')) return;
+            data.config.patrocinadores = (data.config.patrocinadores || []).filter(p => p.id !== id);
+            saveData();
+            renderizarPatrocinadoresAdmin();
+            showToast('Patrocinador removido.');
+        }
+
+        // ---- Propaganda (topo do hero) — administração, mesmo padrão de
+        // Patrocinadores, mas guardada numa lista separada (data.config.propagandas). ----
+        function renderizarPropagandasAdmin() {
+            const container = document.getElementById('listaPropagandasAdmin');
+            if (!container) return;
+            const propagandas = Array.isArray(data.config.propagandas) ? data.config.propagandas : [];
+            if (propagandas.length === 0) {
+                container.innerHTML = '<p style="font-size:12px;color:var(--gray-dark);">Nenhuma propaganda cadastrada ainda.</p>';
+                return;
+            }
+            container.innerHTML = propagandas.map(p => {
+                const nomeSeguro = escapeHtml(p.nome || 'Propaganda');
+                const midiaHtml = p.tipo === 'video'
+                    ? `<video src="${p.url}" muted></video>`
+                    : `<img src="${p.url}" alt="${nomeSeguro}">`;
+                return `
+                    <div class="patrocinador-item-admin">
+                        <div class="patrocinador-preview">${midiaHtml}</div>
+                        <div class="patrocinador-dados">
+                            <div class="nome">${nomeSeguro} <span style="opacity:0.5;font-weight:400;">(${p.tipo === 'video' ? 'vídeo' : 'imagem'})</span></div>
+                            <div class="whats"><i class="fab fa-whatsapp"></i> ${escapeHtml(p.whatsapp || 'sem WhatsApp')}</div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" onclick="removerPropaganda('${p.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        let novaPropagandaMidiaTemp = null; // { tipo: 'imagem'|'video', dataUrl }
+
+        function selecionarMidiaPropaganda(event, tipo) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const statusEl = document.getElementById('novaPropagandaStatus');
+            const previewEl = document.getElementById('novaPropagandaPreview');
+
+            if (tipo === 'video' && file.size > 18 * 1024 * 1024) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Vídeo muito grande (máx. ~18MB). Comprima ou use um vídeo mais curto.</span>';
+                event.target.value = '';
+                return;
+            }
+
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Carregando...</span>';
+
+            if (tipo === 'imagem') {
+                redimensionarImagem(file, 1200, 0.88, file.type === 'image/gif' ? 'image/gif' : 'image/jpeg').then((dataUrl) => {
+                    novaPropagandaMidiaTemp = { tipo: 'imagem', dataUrl };
+                    previewEl.style.display = 'block';
+                    previewEl.innerHTML = `<img src="${dataUrl}" style="width:100%;display:block;">`;
+                    statusEl.innerHTML = '<span style="color:#22c55e;">✅ Pronto para adicionar.</span>';
+                }).catch(() => {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ Não foi possível processar a imagem.</span>';
+                });
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    novaPropagandaMidiaTemp = { tipo: 'video', dataUrl: e.target.result };
+                    previewEl.style.display = 'block';
+                    previewEl.innerHTML = `<video src="${e.target.result}" style="width:100%;display:block;" muted autoplay loop></video>`;
+                    statusEl.innerHTML = '<span style="color:#22c55e;">✅ Pronto para adicionar.</span>';
+                };
+                reader.onerror = () => {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ Não foi possível ler o vídeo.</span>';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function adicionarPropaganda() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            const nome = document.getElementById('novaPropagandaNome').value.trim();
+            const whatsapp = document.getElementById('novaPropagandaWhatsapp').value.trim();
+            const statusEl = document.getElementById('novaPropagandaStatus');
+
+            if (!whatsapp) { showToast('Preencha o WhatsApp de destino', 'error'); return; }
+            if (!novaPropagandaMidiaTemp) { showToast('Escolha uma imagem, gif ou vídeo', 'error'); return; }
+
+            statusEl.innerHTML = '<span style="color:var(--gray-dark);"><i class="fas fa-spinner fa-spin"></i> Enviando...</span>';
+            try {
+                // Reaproveita o mesmo endpoint de upload de mídia já usado pelos
+                // patrocinadores — a validação (admin + tamanho) é idêntica.
+                const resultado = await apiFetch('/upload-midia-patrocinador', {
+                    method: 'POST',
+                    body: JSON.stringify({ midiaBase64: novaPropagandaMidiaTemp.dataUrl }),
+                });
+                if (!Array.isArray(data.config.propagandas)) data.config.propagandas = [];
+                data.config.propagandas.push({
+                    id: 'propaganda_' + Date.now(),
+                    nome,
+                    whatsapp,
+                    tipo: novaPropagandaMidiaTemp.tipo,
+                    url: resultado.url,
+                });
+                await saveData();
+
+                document.getElementById('novaPropagandaNome').value = '';
+                document.getElementById('novaPropagandaWhatsapp').value = '';
+                document.getElementById('novaPropagandaPreview').style.display = 'none';
+                document.getElementById('novaPropagandaPreview').innerHTML = '';
+                document.getElementById('propagandaImagemInput').value = '';
+                document.getElementById('propagandaVideoInput').value = '';
+                novaPropagandaMidiaTemp = null;
+                statusEl.innerHTML = '';
+
+                renderizarPropagandasAdmin();
+                showToast('✅ Propaganda adicionada!');
+            } catch (erro) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ ' + (erro.message || 'Falha ao enviar') + '</span>';
+            }
+        }
+
+        function removerPropaganda(id) {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            if (!confirm('Remover esta propaganda do topo da página?')) return;
+            data.config.propagandas = (data.config.propagandas || []).filter(p => p.id !== id);
+            saveData();
+            renderizarPropagandasAdmin();
+            showToast('Propaganda removida.');
+        }
+
+        // ---- História do time (administração) ----
+        let historiaTimeImagemTemp = undefined; // undefined = não mexeu; '' = remover; string = nova imagem
+
+        function renderizarPreviewImagemHistoriaTime() {
+            const preview = document.getElementById('historiaTimeImagemPreview');
+            const imagemAtual = historiaTimeImagemTemp !== undefined ? historiaTimeImagemTemp : (data.config.historiaTime?.imagem || '');
+            preview.innerHTML = imagemAtual ? `<img src="${imagemAtual}" style="width:100%;height:100%;object-fit:cover;">` : 'Sem imagem';
+        }
+
+        function selecionarImagemHistoriaTime(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            redimensionarImagem(file, 900, 0.88, 'image/jpeg').then((dataUrl) => {
+                historiaTimeImagemTemp = dataUrl;
+                renderizarPreviewImagemHistoriaTime();
+            }).catch(() => showToast('❌ Não foi possível processar a imagem', 'error'));
+        }
+
+        function removerImagemHistoriaTime() {
+            historiaTimeImagemTemp = '';
+            renderizarPreviewImagemHistoriaTime();
+        }
+
+        async function salvarHistoriaTime() {
+            if (!isAdmin()) { showToast('❌ Apenas administradores', 'error'); return; }
+            const titulo = document.getElementById('historiaTimeTitulo').value.trim() || 'Nossa História';
+            const texto = document.getElementById('historiaTimeTexto').value.trim();
+
+            let imagemFinal = data.config.historiaTime?.imagem || '';
+            if (historiaTimeImagemTemp !== undefined) {
+                if (historiaTimeImagemTemp === '') {
+                    imagemFinal = '';
+                } else if (historiaTimeImagemTemp.startsWith('data:image/')) {
+                    try {
+                        const resultado = await apiFetch('/upload-imagem', {
+                            method: 'POST',
+                            body: JSON.stringify({ imagemBase64: historiaTimeImagemTemp, tipo: 'historia' }),
+                        });
+                        imagemFinal = resultado.url;
+                    } catch (erro) {
+                        showToast('❌ ' + (erro.message || 'Falha ao enviar imagem'), 'error');
+                        return;
+                    }
+                }
+            }
+
+            data.config.historiaTime = { titulo, texto, imagem: imagemFinal };
+            historiaTimeImagemTemp = undefined;
+            await saveData();
+            showToast('✅ História do time salva!');
         }
 
         // ============================================================
@@ -8871,7 +10767,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             } else {
                 document.getElementById('sidebar').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'none';
-                showLogin();
+                // Ponto de entrada padrão agora é a página institucional
+                // pública, não mais direto o formulário de login.
+                showLandingPage();
             }
             console.log('🔄 Sessão persistente - não volta ao login ao atualizar a página!');
             console.log('📋 Cadastro automático com perfil básico e permissões gerenciadas pelo administrador!');
