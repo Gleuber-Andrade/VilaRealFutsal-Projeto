@@ -1,0 +1,53 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - proxy_net
+      - internal
+    depends_on:
+      - db
+      - minio
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=vrf_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=vrf_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    volumes:
+      - minio_data:/data
+    networks:
+      - proxy_net
+      - internal
+
+  site:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    external: true
+  internal:
+
+volumes:
+  db_data:
+  minio_data:
