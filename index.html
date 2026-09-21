@@ -3880,8 +3880,18 @@
                 <button class="btn btn-secondary" onclick="exportarBackup()">
                     <i class="fas fa-download"></i> Baixar Backup (JSON)
                 </button>
-                <button class="btn btn-primary" onclick="exportarBackupCSV()" style="margin-left:8px;">
+<button class="btn btn-primary" onclick="exportarBackupCSV()" style="margin-left:8px;">
                     <i class="fas fa-file-csv"></i> Baixar Backup (CSV)
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-clipboard-check"></i> Auditoria de Cadastros</h3>
+                </div>
+                <p style="color:var(--gray-dark);margin-bottom:16px;">Baixa 3 arquivos CSV (usuários, alunos e vínculos quebrados) já sinalizando cadastros com erro — e-mail inválido, telefone inválido, nome vazio, aluno sem responsável vinculado, etc. — prontos para abrir no Excel/Sheets.</p>
+                <button class="btn btn-primary" onclick="exportarCadastrosComErros()">
+                    <i class="fas fa-file-csv"></i> Exportar Cadastros para Análise (CSV)
                 </button>
             </div>
 
@@ -3889,18 +3899,7 @@
                 <div class="card-header">
                     <h3><i class="fas fa-upload"></i> Importar Backup</h3>
                 </div>
-                <div class="file-upload-area" onclick="document.getElementById('fileInputBackup').click()">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Clique para selecionar um arquivo</p>
-                    <input type="file" id="fileInputBackup" accept=".json,.csv" style="display:none;" onchange="importarBackup(event)">
-                </div>
-                <div id="importStatus" style="margin-top:12px;display:none;"></div>
-            </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h3><i class="fas fa-file-import"></i> Importar CSV</h3>
-                </div>
                 <p style="color:var(--gray-dark);margin-bottom:16px;">Formato: nome,pai,telefone,whatsapp,email,nascimento,categoria</p>
                 <div class="file-upload-area" onclick="document.getElementById('fileInputCSV').click()">
                     <i class="fas fa-file-csv"></i>
@@ -9712,12 +9711,68 @@
                 csv +=
                     `${aluno.numero};"${aluno.nome}";"${aluno.pai}";"${aluno.telefone}";"${aluno.whatsapp || ''}";"${aluno.email || ''}";"${aluno.nascimento}";${aluno.idade};"${aluno.categoria}"\n`;
             });
-            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = `backup_alunos_${new Date().toISOString().slice(0,10)}.csv`;
             link.click();
             showToast('Backup CSV exportado!');
+        }
+
+        function baixarCSV(nomeArquivo, conteudo) {
+            const blob = new Blob(['﻿' + conteudo], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = nomeArquivo;
+            link.click();
+        }
+
+        function exportarCadastrosComErros() {
+            if (!isAdmin()) {
+                showToast('❌ Apenas administradores podem exportar cadastros', 'error');
+                return;
+            }
+
+            const hoje = new Date().toISOString().slice(0, 10);
+            const emailValido = (v) => !!v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+            const idsAlunosExistentes = new Set((data.alunos || []).map(a => a.id));
+            const idsVinculados = new Set();
+            (data.usuarios || []).forEach(u => (u.alunosVinculados || []).forEach(id => idsVinculados.add(id)));
+
+            // ---- USUÁRIOS ----
+            let csvUsuarios = 'ID;Nome;Email;Telefone;Perfil;Usuario;Status;QtdAlunosVinculados;IdsAlunosVinculados;ErroEmail;ErroTelefone;ErroNome\n';
+            (data.usuarios || []).forEach(u => {
+                const erroEmail = emailValido(u.email) ? '' : 'EMAIL_INVALIDO';
+                const erroTelefone = (u.telefone && u.telefone.replace(/\D/g, '').length >= 10) ? '' : 'TELEFONE_INVALIDO';
+                const erroNome = (u.nome && u.nome.trim()) ? '' : 'NOME_VAZIO';
+                csvUsuarios += `${csvSafe(u.id)};${csvSafe(u.nome)};${csvSafe(u.email)};${csvSafe(u.telefone)};${csvSafe(u.perfil)};${csvSafe(u.usuario || '')};${csvSafe(u.status)};${(u.alunosVinculados || []).length};${csvSafe((u.alunosVinculados || []).join(','))};${erroEmail};${erroTelefone};${erroNome}\n`;
+            });
+            baixarCSV(`cadastros_usuarios_${hoje}.csv`, csvUsuarios);
+
+            // ---- ALUNOS ----
+            let csvAlunos = 'ID;Numero;Nome;Responsavel(pai);Email;Telefone;WhatsApp;Categoria;Nascimento;Idade;Ativo;ErroVinculo;ErroNome;ErroEmail;ErroNascimento;ErroNumero\n';
+            (data.alunos || []).forEach(a => {
+                const erroVinculo = idsVinculados.has(a.id) ? '' : 'SEM_RESPONSAVEL_VINCULADO';
+                const erroNome = (a.nome && a.nome.trim()) ? '' : 'NOME_VAZIO';
+                const erroEmail = emailValido(a.email) ? '' : 'EMAIL_INVALIDO';
+                const erroNascimento = (a.nascimento && /^\d{4}-\d{2}-\d{2}$/.test(a.nascimento)) ? '' : 'NASCIMENTO_INVALIDO';
+                const erroNumero = (a.numero && String(a.numero).trim()) ? '' : 'NUMERO_MATRICULA_VAZIO';
+                csvAlunos += `${csvSafe(a.id)};${csvSafe(a.numero)};${csvSafe(a.nome)};${csvSafe(a.pai)};${csvSafe(a.email || '')};${csvSafe(a.telefone || '')};${csvSafe(a.whatsapp || '')};${csvSafe(a.categoria)};${csvSafe(a.nascimento)};${csvSafe(a.idade)};${a.ativo ? 'Sim' : 'Não'};${erroVinculo};${erroNome};${erroEmail};${erroNascimento};${erroNumero}\n`;
+            });
+            baixarCSV(`cadastros_alunos_${hoje}.csv`, csvAlunos);
+
+            // ---- VÍNCULOS QUEBRADOS ----
+            let csvQuebrados = 'UsuarioId;UsuarioNome;IdAlunoInexistente\n';
+            (data.usuarios || []).forEach(u => {
+                (u.alunosVinculados || []).forEach(id => {
+                    if (!idsAlunosExistentes.has(id)) {
+                        csvQuebrados += `${csvSafe(u.id)};${csvSafe(u.nome)};${csvSafe(id)}\n`;
+                    }
+                });
+            });
+            baixarCSV(`cadastros_vinculos_quebrados_${hoje}.csv`, csvQuebrados);
+
+            showToast('Relatório de cadastros exportado! (3 arquivos)');
         }
 
         function importarBackup(event) {
