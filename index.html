@@ -5758,9 +5758,10 @@
             const tituloFormatado = formatarTituloComDestaque(config.loginTitle).replace('<span>', '<em>').replace('</span>', '</em>');
             const nomeNav = document.getElementById('landingNomeClube');
             if (nomeNav) nomeNav.innerHTML = tituloFormatado;
+            
             const nomeFooter = document.getElementById('landingFooterNome');
-            if nomeFooter.innerHTML = tituloFormatado;
-
+            if (nomeFooter) nomeFooter.innerHTML = tituloFormatado;
+            
             // Hero: título/subtítulo próprios da página institucional (podem ser
             // diferentes do título curto usado na tela de login).
             const heroTitulo = document.getElementById('landingHeroTitulo');
@@ -9727,6 +9728,11 @@ const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
             link.click();
         }
 
+        function csvSafe(v) {
+            const s = (v === null || v === undefined) ? '' : String(v);
+            return `"${s.replace(/"/g, '""')}"`;
+        }
+
         function exportarCadastrosComErros() {
             if (!isAdmin()) {
                 showToast('❌ Apenas administradores podem exportar cadastros', 'error');
@@ -9774,7 +9780,6 @@ const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
 
             showToast('Relatório de cadastros exportado! (3 arquivos)');
         }
-
         function importarBackup(event) {
             if (!isAdmin()) {
                 showToast('❌ Apenas administradores podem importar backups', 'error');
